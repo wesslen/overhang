@@ -1,0 +1,1378 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Loading… — Overhang</title>
+    <meta name="description" content="" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Overhang" />
+    <meta property="og:title" content="Overhang" />
+    <meta
+      property="og:description"
+      content="Ryan Wesslen's public notebook on data science, machine learning, and the strange new world of generative AI."
+    />
+    <meta property="og:url" content="https://wesslen.github.io/overhang/" />
+    <meta property="og:image" content="https://wesslen.github.io/overhang/og-default.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Overhang" />
+    <meta
+      name="twitter:description"
+      content="Ryan Wesslen's public notebook on data science, machine learning, and the strange new world of generative AI."
+    />
+    <meta name="twitter:image" content="https://wesslen.github.io/overhang/og-default.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
+    <link rel="stylesheet" href="./style.css" />
+
+    <!--
+    highlight.js themes — one active at a time.
+    JS swaps `disabled` based on the current theme.
+    Dark:  github-dark  (default)
+    Light: github       (loaded disabled, enabled on theme switch)
+  -->
+    <link
+      id="hljs-dark"
+      rel="stylesheet"
+      disabled
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"
+    />
+    <link
+      id="hljs-light"
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+    />
+
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>"
+    />
+    <!-- MathJax for mathematical notation (used in posts with formal models) -->
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [
+            ["\\(", "\\)"],
+            ["$", "$"],
+          ],
+          displayMath: [
+            ["$$", "$$"],
+            ["\\[", "\\]"],
+          ],
+          processEscapes: true,
+        },
+        options: {
+          skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+        },
+      };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <script src="./quizzes/quiz-engine.js"></script>
+  </head>
+  <body>
+    <!-- Reading progress bar -->
+    <div id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+    <!-- ── Site Header ────────────────────────────────────── -->
+    <header class="site-header">
+      <div class="header-inner">
+        <a href="./index.html" class="site-title">
+          // overhang
+          <span class="cursor">_</span>
+        </a>
+        <div class="header-actions">
+          <button class="search-trigger" id="search-modal-btn" title="Search (⌘K)" aria-label="Search">
+            <svg width="16" height="16" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M10 6.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-.691 3.516a4.5 4.5 0 1 1 .707-.707l2.838 2.837a.5.5 0 0 1-.708.708L9.31 10.016Z"
+                fill="currentColor"
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </button>
+          <a href="./glossary.html" class="nav-link">glossary</a>
+          <a href="./about.html" class="nav-link">about</a>
+          <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+          <button class="theme-toggle" id="theme-toggle" title="Toggle dark/light mode" aria-label="Toggle theme">
+            <span id="theme-icon">☀️</span>
+          </button>
+        </div>
+      </div>
+    </header>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+      <a href="./glossary.html" class="nav-link">glossary</a>
+      <a href="./about.html" class="nav-link">about</a>
+    </nav>
+
+    <!-- ── Post Layout ────────────────────────────────────── -->
+    <div class="post-layout container">
+      <!-- Main article column -->
+      <article id="article-col">
+        <!-- Top navigation: back link (left) + next post link (right) -->
+        <div class="post-top-nav">
+          <a href="./index.html" class="back-link" id="back-link">
+            <svg
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M10 12L6 8l4-4" />
+            </svg>
+            all posts
+          </a>
+          <a href="#" class="next-link" id="next-post-link" style="display: none" aria-label="Next post">
+            next post
+            <svg
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M6 4l4 4-4 4" />
+            </svg>
+          </a>
+        </div>
+
+        <!-- Loading / error placeholders -->
+        <div id="loading-state" class="loading-state">
+          <span class="loading-dots">fetching post</span>
+        </div>
+        <div id="error-state" class="error-state" style="display: none">
+          <p>⚠ Post not found.</p>
+          <p style="font-size: 0.75rem; margin-top: 0.5rem; color: var(--muted)">
+            Make sure the slug is correct and you're serving the site (not opening as
+            <code>file://</code>
+            ).
+          </p>
+        </div>
+
+        <!-- Post content (rendered after fetch) -->
+        <div id="post-content" style="display: none">
+          <header class="post-header">
+            <div class="post-eyebrow">
+              <span class="post-date" id="post-date"></span>
+              <span class="post-read-time" id="post-read-time"></span>
+            </div>
+            <h1 class="post-title" id="post-title"></h1>
+            <p class="post-description" id="post-description"></p>
+            <div class="tags" id="post-tags"></div>
+          </header>
+
+          <!-- Mobile TOC (collapsible) -->
+          <div class="toc-mobile" id="toc-mobile">
+            <button class="toc-mobile-toggle" id="toc-mobile-toggle" aria-expanded="false">
+              <span>// table of contents</span>
+              <span class="toc-chevron" aria-hidden="true">▾</span>
+            </button>
+            <div class="toc-mobile-body" id="toc-mobile-body">
+              <ul class="toc-list" id="toc-list-mobile"></ul>
+            </div>
+          </div>
+
+          <!-- Rendered markdown -->
+          <div class="prose" id="prose-body"></div>
+        </div>
+      </article>
+
+      <!-- ── TOC Sidebar (desktop only) ────────────────── -->
+      <aside class="toc-sidebar" id="toc-sidebar" aria-label="Table of contents">
+        <div class="toc-title">// contents</div>
+        <ul class="toc-list" id="toc-list-desktop"></ul>
+      </aside>
+    </div>
+
+    <!-- ── Footer ────────────────────────────────────────── -->
+    <footer class="site-footer">
+      <p>
+        written &amp; reviewed with Claude Cowork
+        <br />
+        <a href="https://github.com/wesslen/overhang" target="_blank" rel="noopener">view source on GitHub</a>
+      </p>
+      <p>
+        © 2026 Ryan Wesslen ·
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>
+      </p>
+      <p class="footer-disclaimer">
+        Views expressed here are my own and do not represent those of my employer. Nothing here is legal, regulatory, or
+        financial advice.
+      </p>
+    </footer>
+
+    <!-- CDN: marked.js (markdown parser) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
+    <!-- CDN: highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <script>
+      (() => {
+        "use strict";
+
+        /* ── Theme Persistence ──────────────────────────────────
+       Also swaps the highlight.js stylesheet so code blocks
+       always use an appropriate theme for the active mode.
+    ─────────────────────────────────────────────────────── */
+        const root = document.documentElement;
+        const toggleBtn = document.getElementById("theme-toggle");
+        const themeIcon = document.getElementById("theme-icon");
+        const hljsDark = document.getElementById("hljs-dark");
+        const hljsLight = document.getElementById("hljs-light");
+        const savedTheme = localStorage.getItem("overhang-theme") || "light";
+
+        function applyTheme(theme) {
+          root.setAttribute("data-theme", theme);
+          themeIcon.textContent = theme === "dark" ? "☀️" : "🌙";
+          hljsDark.disabled = theme === "light";
+          hljsLight.disabled = theme === "dark";
+          localStorage.setItem("overhang-theme", theme);
+        }
+
+        applyTheme(savedTheme);
+        toggleBtn.addEventListener("click", () => {
+          applyTheme(root.getAttribute("data-theme") === "dark" ? "light" : "dark");
+        });
+
+        /* ── Mobile Nav (hamburger) ─────────────────────── */
+        (function () {
+          var btn = document.getElementById("nav-hamburger");
+          var nav = document.getElementById("mobile-nav");
+          if (!btn || !nav) return;
+          function openMenu() {
+            nav.classList.add("open");
+            btn.setAttribute("aria-expanded", "true");
+            btn.textContent = "✕";
+          }
+          function closeMenu() {
+            nav.classList.remove("open");
+            btn.setAttribute("aria-expanded", "false");
+            btn.innerHTML = "&#9776;";
+          }
+          btn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            nav.classList.contains("open") ? closeMenu() : openMenu();
+          });
+          document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") closeMenu();
+          });
+          nav.querySelectorAll(".nav-link").forEach(function (link) {
+            link.addEventListener("click", closeMenu);
+          });
+          document.addEventListener("click", function (e) {
+            if (!btn.contains(e.target) && !nav.contains(e.target)) closeMenu();
+          });
+        })();
+        /* ── Reading Progress Bar ───────────────────────────── */
+        const bar = document.getElementById("progress-bar");
+        function updateProgress() {
+          const scrollTop = window.scrollY;
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const pct = docHeight > 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0;
+          bar.style.width = pct + "%";
+          bar.setAttribute("aria-valuenow", Math.round(pct));
+        }
+        window.addEventListener("scroll", updateProgress, { passive: true });
+
+        /* ── Tag Color (same algo as index.html) ────────────── */
+        function tagHue(tag) {
+          let hash = 0;
+          for (let i = 0; i < tag.length; i++) {
+            hash = (hash * 31 + tag.charCodeAt(i)) & 0xffffffff;
+          }
+          return Math.abs(hash) % 360;
+        }
+        function tagStyle(tag) {
+          const hue = tagHue(tag);
+          const isDark = root.getAttribute("data-theme") === "dark";
+          const bg = isDark ? `hsla(${hue},70%,60%,0.12)` : `hsla(${hue},60%,40%,0.10)`;
+          const border = isDark ? `hsla(${hue},70%,60%,0.4)` : `hsla(${hue},60%,40%,0.35)`;
+          const color = isDark ? `hsl(${hue},80%,72%)` : `hsl(${hue},50%,35%)`;
+          return `background:${bg};border-color:${border};color:${color}`;
+        }
+
+        /* ── Helpers ────────────────────────────────────────── */
+        function readTime(text) {
+          const words = text.trim().split(/\s+/).length;
+          return `${Math.max(1, Math.round(words / 225))} min read`;
+        }
+        function fmtDate(iso) {
+          return new Date(iso + "T00:00:00").toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
+        }
+
+        /* ── Strip YAML Frontmatter ─────────────────────────── */
+        function stripFrontmatter(raw) {
+          const lines = raw.split("\n");
+          if (lines[0].trim() !== "---") return { meta: {}, body: raw };
+
+          let endIdx = -1;
+          for (let i = 1; i < lines.length; i++) {
+            if (lines[i].trim() === "---") {
+              endIdx = i;
+              break;
+            }
+          }
+          if (endIdx === -1) return { meta: {}, body: raw };
+
+          const fmLines = lines.slice(1, endIdx);
+          const meta = {};
+          fmLines.forEach((line) => {
+            const m = line.match(/^(\w+):\s*(.+)$/);
+            if (!m) return;
+            const [, key, val] = m;
+            if (val.startsWith("[") && val.endsWith("]")) {
+              meta[key] = val
+                .slice(1, -1)
+                .split(",")
+                .map((s) => s.trim().replace(/^["']|["']$/g, ""));
+            } else {
+              meta[key] = val.trim().replace(/^["']|["']$/g, "");
+            }
+          });
+
+          return { meta, body: lines.slice(endIdx + 1).join("\n") };
+        }
+
+        /* ── Footnote / Citation Pre-processor ─────────────────
+       Syntax in markdown:
+
+         Inline reference:  some text[^1] more text
+         Definition (anywhere, typically at end of post):
+           [^1]: Author, "Title," Journal, Year. https://...
+
+       Renders:
+         - Inline → superscript pill linking to #fn-1
+         - Definitions → styled References section at bottom
+         - Back-arrow link returns reader to inline citation
+
+       Definitions are stripped from the markdown body before
+       passing to marked, so they never appear as plain text.
+    ─────────────────────────────────────────────────────── */
+        /* ── Math protection: shield $...$ and $$...$$ from marked.js ──
+       marked.js processes _ and * inside math spans, breaking LaTeX.
+       We stash every math region before marked runs, then restore
+       after, so MathJax receives the original LaTeX untouched.
+    ─────────────────────────────────────────────────────── */
+        function protectMath(text) {
+          const stash = [];
+          // Sentinel unlikely to appear in any blog prose or HTML
+          const ph = (i) => "DRIFTMATHSTASH" + i + "DRIFTMATHEND";
+          // Display math first ($$...$$) to avoid consuming a lone $ twice
+          text = text.replace(/\$\$([\s\S]+?)\$\$/g, (_, m) => {
+            stash.push("$$" + m + "$$");
+            return ph(stash.length - 1);
+          });
+          // Inline math ($...$) — single line only, no empty spans
+          // (?!\d) negative lookahead excludes currency ($50, $300M) from being treated as math delimiters
+          text = text.replace(/\$(?!\d)([^\$\r\n]+?)\$/g, (_, m) => {
+            stash.push("$" + m + "$");
+            return ph(stash.length - 1);
+          });
+          return { text, stash };
+        }
+
+        function restoreMath(html, stash) {
+          return html.replace(/DRIFTMATHSTASH(\d+)DRIFTMATHEND/g, (_, i) => stash[+i]);
+        }
+
+        function processFootnotes(body) {
+          const defs = {};
+          const order = []; // preserve definition order
+          const defRx = /^\[\^([^\]]+)\]:\s*(.+)$/gm;
+          let m;
+
+          while ((m = defRx.exec(body)) !== null) {
+            const id = m[1].trim();
+            const text = m[2].trim();
+            if (!defs[id]) {
+              defs[id] = text;
+              order.push(id);
+            }
+          }
+
+          if (order.length === 0) return { body, refsHtml: "" };
+
+          // Remove definition lines from body
+          let cleanBody = body.replace(/^\[\^[^\]]+\]:\s*.+$/gm, "").replace(/\n{3,}/g, "\n\n");
+
+          // Replace inline [^id] with superscript links
+          // Avoid replacing inside fenced code blocks
+          cleanBody = cleanBody.replace(/```[\s\S]*?```/g, (match) => match); // preserve code blocks
+          // Two-pass: protect code blocks, then replace refs
+          const codeBlocks = [];
+          cleanBody = cleanBody.replace(/```[\s\S]*?```|`[^`]+`/g, (block) => {
+            codeBlocks.push(block);
+            return `\x00CODE${codeBlocks.length - 1}\x00`;
+          });
+          cleanBody = cleanBody.replace(/\[\^([^\]]+)\]/g, (_, id) => {
+            const n = order.indexOf(id.trim()) + 1;
+            return `<sup class="cite-ref"><a href="#fn-${id}" id="fnref-${id}">${n || id}</a></sup>`;
+          });
+          // Restore code blocks
+          cleanBody = cleanBody.replace(/\x00CODE(\d+)\x00/g, (_, i) => codeBlocks[+i]);
+
+          // Build the references section HTML
+          const items = order
+            .map((id, i) => {
+              // Parse inline markdown in the footnote text so that [text](url)
+              // links, *italic*, bare URLs, etc. all render correctly.
+              const linkedText = marked.parseInline(defs[id]);
+              return `<li id="fn-${id}">
+          <span class="cite-num">${i + 1}.</span>
+          <span>${linkedText}&nbsp;<a href="#fnref-${id}" class="cite-back" aria-label="Return to text">↩</a></span>
+        </li>`;
+            })
+            .join("\n");
+
+          const refsHtml = `
+        <section class="citations" aria-label="References">
+          <button class="citations-toggle" aria-expanded="true" aria-controls="cite-list-body">
+            <span class="citations-heading">References</span>
+            <span class="citations-chevron" aria-hidden="true">▾</span>
+          </button>
+          <ol class="cite-list" id="cite-list-body">${items}</ol>
+        </section>`;
+
+          return { body: cleanBody, refsHtml };
+        }
+
+        /* ── YouTube Embed Processor ────────────────────────────
+       Syntax in markdown (standalone paragraph, nothing else on the line):
+
+         [youtube: VIDEO_ID]
+         [youtube: VIDEO_ID?t=90]          ← starts at 1m30s
+         [youtube: VIDEO_ID "Caption text"]
+         [youtube: VIDEO_ID?t=90 "Caption"]
+
+       Renders a responsive 16:9 iframe with optional caption.
+       The embed uses youtube-nocookie.com for privacy.
+    ─────────────────────────────────────────────────────── */
+        function processYouTube(proseEl) {
+          const ytRx = /^\[youtube:\s*([a-zA-Z0-9_-]+)(?:\?t=(\d+))?(?:\s+"([^"]*)")?\]$/;
+
+          proseEl.querySelectorAll("p").forEach((p) => {
+            const text = p.textContent.trim();
+            const match = text.match(ytRx);
+            if (!match) return;
+
+            const videoId = match[1];
+            const startT = match[2] ? parseInt(match[2], 10) : null;
+            const caption = match[3] || null;
+
+            // Build embed URL — use nocookie domain for reader privacy
+            let src = `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1`;
+            if (startT) src += `&start=${startT}`;
+
+            const wrapper = document.createElement("div");
+            wrapper.innerHTML = `
+          <div class="yt-embed">
+            <iframe
+              src="${src}"
+              title="${caption ? caption.replace(/"/g, "&quot;") : "YouTube video"}"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              loading="lazy">
+            </iframe>
+          </div>
+          ${caption ? `<p class="yt-caption">${caption}</p>` : ""}`;
+
+            p.replaceWith(...wrapper.childNodes);
+          });
+        }
+
+        /* ── GitHub-style Alert Processor ──────────────────────────
+       Converts blockquotes whose first line is [!TYPE] into
+       styled alert divs. Supported: NOTE, TIP, IMPORTANT, WARNING, CAUTION.
+
+       Input (after marked renders):
+         <blockquote><p>[!NOTE]<br>Content here.</p></blockquote>
+
+       Output:
+         <div class="gh-alert gh-alert-note">
+           <div class="gh-alert-title"><span>ℹ</span> Note</div>
+           <p>Content here.</p>
+         </div>
+    ─────────────────────────────────────────────────────── */
+        const ALERT_META = {
+          NOTE: { icon: "ℹ", label: "Note" },
+          TIP: { icon: "💡", label: "Tip" },
+          IMPORTANT: { icon: "⚡", label: "Important" },
+          WARNING: { icon: "⚠", label: "Warning" },
+          CAUTION: { icon: "🔴", label: "Caution" },
+        };
+
+        function processAlerts(proseEl) {
+          proseEl.querySelectorAll("blockquote").forEach((bq) => {
+            const firstP = bq.querySelector("p");
+            if (!firstP) return;
+
+            // marked renders `> [!NOTE]\n> content` as:
+            // <p>[!NOTE]<br>content</p>  (single paragraph, <br> separator)
+            // OR as two separate paragraphs depending on the markdown layout.
+            const raw = firstP.innerHTML;
+            const match = raw.match(/^\[!([A-Z]+)\](<br\s*\/?>|<\/p><p>)?([\s\S]*)/i);
+            if (!match) return;
+
+            const type = match[1].toUpperCase();
+
+            // ── Pull Quote: [!QUOTE] ──────────────────────────────
+            if (type === "QUOTE") {
+              // Gather all content lines, then split off trailing attribution
+              // Attribution line starts with — (em dash) or -- (double hyphen)
+              const allParas = [...bq.querySelectorAll("p")];
+              let allHtml = (match[3] || "").trim();
+              allParas.slice(1).forEach((p) => {
+                allHtml += "<br>" + p.innerHTML;
+              });
+
+              // Split on last <br> that precedes an em-dash attribution
+              const attrMatch = allHtml.match(/^([\s\S]*?)(?:<br\s*\/?>)?([—].*?)$/);
+              let quoteText = allHtml;
+              let attrText = "";
+              if (attrMatch) {
+                quoteText = attrMatch[1].trim();
+                attrText = attrMatch[2].trim();
+              }
+
+              const fig = document.createElement("figure");
+              fig.className = "pullquote";
+              fig.innerHTML = `
+                <p class="pullquote-text">${quoteText}</p>
+                ${attrText ? `<p class="pullquote-attr">${attrText}</p>` : ""}
+              `.trim();
+              bq.replaceWith(fig);
+              return;
+            }
+
+            const meta = ALERT_META[type];
+            if (!meta) return;
+
+            // Remaining content after the [!TYPE] token (inline HTML of first paragraph)
+            const rest = (match[3] || "").trim();
+
+            // Preserve every block after the first paragraph in document order —
+            // paragraphs, but also lists (<ul>/<ol>), which the old <p>-only
+            // collection silently dropped. This lets alerts contain bullet lists.
+            const bodyParts = [];
+            if (rest) bodyParts.push(`<p>${rest}</p>`);
+            let sib = firstP.nextElementSibling;
+            while (sib) {
+              bodyParts.push(sib.outerHTML);
+              sib = sib.nextElementSibling;
+            }
+
+            const div = document.createElement("div");
+            div.className = `gh-alert gh-alert-${type.toLowerCase()}`;
+            div.innerHTML = `
+          <div class="gh-alert-title"><span>${meta.icon}</span> ${meta.label}</div>
+          ${bodyParts.join("\n")}
+        `.trim();
+
+            bq.replaceWith(div);
+          });
+        }
+
+        /* ── Language Labels on Code Blocks ─────────────────────
+       Reads the class applied by highlight.js (e.g. language-python)
+       and sets a data-lang attribute on the <pre> so CSS can render
+       a small language tab via ::before pseudo-element.
+    ─────────────────────────────────────────────────────── */
+        function labelCodeBlocks() {
+          document.querySelectorAll(".prose pre code[class]").forEach((codeEl) => {
+            const m = codeEl.className.match(/language-(\w+)/);
+            if (m) codeEl.closest("pre").setAttribute("data-lang", m[1]);
+          });
+        }
+
+        /* ── Wrap Tables for Mobile Scroll ───────────────────────
+       Wraps each <table> in a <div class="table-scroll-wrapper">
+       so that overflow scrolling works reliably on iOS/Android
+       regardless of surrounding layout constraints.
+    ─────────────────────────────────────────────────────── */
+        function wrapTables(proseEl) {
+          proseEl.querySelectorAll("table").forEach((table) => {
+            if (table.closest(".table-scroll-wrapper")) return; // already wrapped
+            const wrapper = document.createElement("div");
+            wrapper.className = "table-scroll-wrapper";
+            table.parentNode.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
+          });
+        }
+
+        /* ── Configure marked.js ────────────────────────────── */
+        marked.setOptions({
+          breaks: true,
+          gfm: true,
+          highlight: function (code, lang) {
+            if (lang && hljs.getLanguage(lang)) {
+              try {
+                return hljs.highlight(code, { language: lang }).value;
+              } catch {}
+            }
+            // No recognised language: return code as plain text.
+            // Avoids hljs.highlightAuto() which uses new Function() internally
+            // and is flagged by Content-Security-Policy / Chrome DevTools.
+            return hljs.highlight(code, { language: "plaintext" }).value;
+          },
+        });
+
+        /* ── Inject copy buttons into code blocks ───────────── */
+        function injectCopyButtons() {
+          document.querySelectorAll(".prose pre").forEach((pre) => {
+            if (pre.querySelector(".copy-btn")) return;
+
+            const btn = document.createElement("button");
+            btn.className = "copy-btn";
+            btn.textContent = "copy";
+            btn.setAttribute("aria-label", "Copy code to clipboard");
+
+            btn.addEventListener("click", async () => {
+              const code = pre.querySelector("code");
+              if (!code) return;
+              try {
+                await navigator.clipboard.writeText(code.innerText);
+                btn.textContent = "copied!";
+                btn.classList.add("copied");
+                setTimeout(() => {
+                  btn.textContent = "copy";
+                  btn.classList.remove("copied");
+                }, 2000);
+              } catch {
+                btn.textContent = "error";
+                setTimeout(() => {
+                  btn.textContent = "copy";
+                }, 2000);
+              }
+            });
+
+            pre.appendChild(btn);
+          });
+        }
+
+        /* ── Build Table of Contents ────────────────────────── */
+        function buildTOC() {
+          const prose = document.getElementById("prose-body");
+          const headings = [...prose.querySelectorAll("h2, h3")];
+
+          if (headings.length < 2) {
+            document.getElementById("toc-mobile").style.display = "none";
+            return;
+          }
+
+          headings.forEach((h, idx) => {
+            if (!h.id) {
+              h.id =
+                h.textContent
+                  .toLowerCase()
+                  .replace(/[^\w\s-]/g, "")
+                  .replace(/\s+/g, "-")
+                  .replace(/-+/g, "-") +
+                "-" +
+                idx;
+            }
+          });
+
+          function renderTocList(container) {
+            headings.forEach((h) => {
+              const li = document.createElement("li");
+              li.className = `toc-item ${h.tagName.toLowerCase()}`;
+              const a = document.createElement("a");
+              a.href = `#${h.id}`;
+              a.textContent = h.textContent;
+              a.addEventListener("click", (e) => {
+                e.preventDefault();
+                document.getElementById(h.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+              });
+              li.appendChild(a);
+              container.appendChild(li);
+            });
+          }
+
+          renderTocList(document.getElementById("toc-list-desktop"));
+          renderTocList(document.getElementById("toc-list-mobile"));
+
+          const tocLinks = [...document.querySelectorAll(".toc-list a")];
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  const id = entry.target.id;
+                  tocLinks.forEach((a) => {
+                    a.classList.toggle("active", a.getAttribute("href") === `#${id}`);
+                  });
+                }
+              });
+            },
+            { rootMargin: "-20% 0px -70% 0px" }
+          );
+
+          headings.forEach((h) => observer.observe(h));
+        }
+
+        /* ── Mobile TOC Toggle ──────────────────────────────── */
+        document.getElementById("toc-mobile-toggle").addEventListener("click", () => {
+          const mobile = document.getElementById("toc-mobile");
+          const open = mobile.classList.toggle("open");
+          document.getElementById("toc-mobile-toggle").setAttribute("aria-expanded", open);
+        });
+
+        /* ── Curriculum-order navigation helpers ─────────────── */
+        function buildCurriculumNav(slidesData) {
+          const lookup = {};
+          const order = [];
+          slidesData.forEach((series, sIdx) => {
+            (series.posts || []).forEach((slug, pIdx) => {
+              const entry = {
+                slug,
+                seriesId: series.id,
+                seriesTitle: series.title,
+                moduleNum: String(sIdx + 1).padStart(2, "0"),
+                isLastInSeries: pIdx === series.posts.length - 1,
+              };
+              lookup[slug] = { entry, currIdx: order.length };
+              order.push(slug);
+            });
+          });
+          return { lookup, order };
+        }
+
+        function getSeriesNext(slug, curriculum, manifestBySlug) {
+          const found = curriculum.lookup[slug];
+          if (!found) return null;
+          const nextIdx = found.currIdx + 1;
+          if (nextIdx >= curriculum.order.length) return null;
+          const nextSlug = curriculum.order[nextIdx];
+          const nextPost = manifestBySlug[nextSlug];
+          if (!nextPost) return null;
+          const crossModule = found.entry.seriesId !== curriculum.lookup[nextSlug].entry.seriesId;
+          const label = crossModule ? "next module" : "next in module";
+          return { post: nextPost, label };
+        }
+
+        /* ── Post Navigation ─────────────────────────────────── */
+        function renderPostNav(manifest, currentSlug, curriculum, manifestBySlug) {
+          if (!manifest || manifest.length < 2) return;
+          const idx = manifest.findIndex((p) => p.slug === currentSlug);
+          if (idx === -1) return;
+
+          const current = manifest[idx];
+          const currentTags = new Set(current.tags || []);
+          const picks = [];
+          const usedSlugs = new Set([currentSlug]);
+
+          // Next post: series/curriculum order if available, else date order
+          const seriesNext = curriculum ? getSeriesNext(currentSlug, curriculum, manifestBySlug) : null;
+          if (seriesNext) {
+            picks.push(seriesNext);
+            usedSlugs.add(seriesNext.post.slug);
+          } else if (idx < manifest.length - 1) {
+            const next = manifest[idx + 1];
+            picks.push({ post: next, label: "next" });
+            usedSlugs.add(next.slug);
+          }
+
+          // Fill to 2 with most tag-overlapping post, most recent as tiebreaker
+          if (picks.length < 2) {
+            const candidates = manifest
+              .filter((p) => !usedSlugs.has(p.slug))
+              .map((p) => ({
+                post: p,
+                overlap: (p.tags || []).filter((t) => currentTags.has(t)).length,
+              }))
+              .sort((a, b) => b.overlap - a.overlap || new Date(b.post.date) - new Date(a.post.date));
+            candidates.slice(0, 2 - picks.length).forEach(({ post }) => {
+              picks.push({ post, label: "related" });
+            });
+          }
+
+          if (picks.length === 0) return;
+
+          const nav = document.createElement("nav");
+          nav.className = "post-nav";
+          nav.setAttribute("aria-label", "More posts");
+          nav.innerHTML = `
+            <div class="post-nav-label">// more posts</div>
+            <div class="post-nav-cards">
+              ${picks
+                .map(
+                  ({ post, label }) => `
+                <a href="./post.html?slug=${encodeURIComponent(post.slug)}" class="post-nav-card">
+                  <span class="post-nav-meta">${label} · ${fmtDate(post.date)}</span>
+                  <span class="post-nav-title">${post.title}</span>
+                </a>`
+                )
+                .join("")}
+            </div>`;
+
+          const citations = document.querySelector(".citations");
+          if (citations) {
+            citations.parentNode.insertBefore(nav, citations);
+          } else {
+            document.getElementById("article-col").appendChild(nav);
+          }
+        }
+
+        /* ── Load & Render Post ─────────────────────────────── */
+        async function loadPost() {
+          const params = new URLSearchParams(window.location.search);
+          const slug = params.get("slug");
+          const loadingEl = document.getElementById("loading-state");
+          const errorEl = document.getElementById("error-state");
+          const contentEl = document.getElementById("post-content");
+
+          if (!slug) {
+            loadingEl.style.display = "none";
+            errorEl.style.display = "block";
+            errorEl.querySelector("p").textContent = "⚠ No post slug provided.";
+            return;
+          }
+
+          try {
+            // Fetch post markdown
+            const mdRes = await fetch(`./posts/${encodeURIComponent(slug)}.md`);
+            if (!mdRes.ok) throw new Error(`HTTP ${mdRes.status}`);
+            const raw = await mdRes.text();
+
+            // Try to get metadata from manifest + curriculum order from slides.json
+            let manifestMeta = {};
+            let fullManifest = [];
+            let slidesData = [];
+            try {
+              const [mRes, sRes] = await Promise.all([fetch("./posts/index.json"), fetch("./slides/slides.json")]);
+              if (mRes.ok) {
+                fullManifest = await mRes.json();
+                manifestMeta = fullManifest.find((p) => p.slug === slug) || {};
+              }
+              if (sRes.ok) slidesData = await sRes.json();
+            } catch {}
+            const manifestBySlug = Object.fromEntries(fullManifest.map((p) => [p.slug, p]));
+            const curriculum = slidesData.length > 0 ? buildCurriculumNav(slidesData) : null;
+
+            // Strip frontmatter
+            const { meta: fmMeta, body: rawBody } = stripFrontmatter(raw);
+            const meta = { ...fmMeta, ...manifestMeta };
+
+            // ── Pre-process footnotes/citations before marked ──
+            const { body, refsHtml } = processFootnotes(rawBody);
+
+            // Update page metadata
+            const title = meta.title || fmMeta.title || slug;
+            const description = meta.description || "";
+            document.title = `${title} — Overhang`;
+            document.querySelector('meta[name="description"]').content = description;
+            document.querySelector('meta[property="og:title"]')?.setAttribute("content", title);
+            document.querySelector('meta[property="og:description"]')?.setAttribute("content", description);
+            document.querySelector('meta[property="og:url"]')?.setAttribute("content", window.location.href);
+            document.querySelector('meta[name="twitter:title"]')?.setAttribute("content", title);
+            document.querySelector('meta[name="twitter:description"]')?.setAttribute("content", description);
+
+            // Populate post header
+            document.getElementById("post-date").textContent = meta.date ? fmtDate(meta.date) : "";
+            document.getElementById("post-read-time").textContent = readTime(rawBody);
+            document.getElementById("post-title").textContent = title;
+            document.getElementById("post-description").textContent = meta.description || "";
+
+            // Tags
+            const tagsEl = document.getElementById("post-tags");
+            const tags = meta.tags || fmMeta.tags || [];
+            tagsEl.innerHTML = tags.map((t) => `<span class="tag" style="${tagStyle(t)}">${t}</span>`).join("");
+
+            // ── Render markdown → HTML, append references ──────
+            const { text: mathSafeBody, stash: mathStash } = protectMath(body);
+            const html = restoreMath(marked.parse(mathSafeBody), mathStash) + refsHtml;
+            const proseEl = document.getElementById("prose-body");
+            proseEl.innerHTML = html;
+
+            // Re-highlight any code blocks marked didn't catch
+            document.querySelectorAll(".prose pre code:not(.hljs)").forEach((el) => {
+              hljs.highlightElement(el);
+            });
+
+            // ── Post-render processors ─────────────────────────
+            processAlerts(proseEl); // must run before TOC (may change heading structure)
+            wrapTables(proseEl);
+            labelCodeBlocks();
+            injectCopyButtons();
+            processYouTube(proseEl);
+            applyFootnoteTooltips(proseEl);
+
+            // Typeset MathJax if present (no-op on posts without math)
+            // Typeset MathJax: check typesetPromise specifically (window.MathJax is always set
+            // as a config object, but typesetPromise only exists after the CDN script loads)
+            if (window.MathJax && window.MathJax.typesetPromise) {
+              MathJax.typesetPromise([proseEl]).catch((err) => console.warn("MathJax:", err));
+            }
+
+            // ── Glossary tooltips ──────────────────────────────
+            try {
+              const gRes = await fetch("./glossary.json");
+              if (gRes.ok) {
+                const glossary = await gRes.json();
+                // Apply to prose body first (primary first-occurrence context)
+                applyGlossaryTooltips(proseEl, glossary);
+                // Apply independently to the post description (separate seen set,
+                // so a term mentioned in the teaser also tooltips in the body)
+                const descEl = document.getElementById("post-description");
+                if (descEl) applyGlossaryTooltips(descEl, glossary);
+              }
+            } catch (e) {
+              // Non-fatal: tooltips are an enhancement only
+              console.warn("Glossary tooltip init failed:", e);
+            }
+
+            // Build TOC
+            buildTOC();
+
+            // Collapsible references section
+            const citationsToggle = document.querySelector(".citations-toggle");
+            if (citationsToggle) {
+              citationsToggle.addEventListener("click", () => {
+                const expanded = citationsToggle.getAttribute("aria-expanded") === "true";
+                citationsToggle.setAttribute("aria-expanded", !expanded);
+                const body = document.getElementById("cite-list-body");
+                if (body) body.classList.toggle("collapsed", expanded);
+                const chevron = citationsToggle.querySelector(".citations-chevron");
+                if (chevron) chevron.textContent = expanded ? "▸" : "▾";
+              });
+            }
+
+            // Show content
+            loadingEl.style.display = "none";
+            contentEl.style.display = "block";
+            updateProgress();
+
+            // Populate top-right next post link (series/curriculum order)
+            const nextLinkEl = document.getElementById("next-post-link");
+            if (nextLinkEl && fullManifest.length > 0) {
+              const topSeriesNext = curriculum ? getSeriesNext(slug, curriculum, manifestBySlug) : null;
+              if (topSeriesNext) {
+                nextLinkEl.href = `./post.html?slug=${encodeURIComponent(topSeriesNext.post.slug)}`;
+                nextLinkEl.style.display = "inline-flex";
+              } else {
+                const currentIdx = fullManifest.findIndex((p) => p.slug === slug);
+                if (currentIdx !== -1 && currentIdx < fullManifest.length - 1) {
+                  const nextPost = fullManifest[currentIdx + 1];
+                  nextLinkEl.href = `./post.html?slug=${encodeURIComponent(nextPost.slug)}`;
+                  nextLinkEl.style.display = "inline-flex";
+                }
+              }
+            }
+
+            // Post navigation (bottom cards)
+            renderPostNav(fullManifest, slug, curriculum, manifestBySlug);
+
+            // Quiz widget — loads if quizzes/posts/{slug}.json exists
+            if (typeof window.initQuiz === "function") {
+              window.initQuiz(slug);
+            }
+          } catch (err) {
+            loadingEl.style.display = "none";
+            errorEl.style.display = "block";
+            if (slug && slug.endsWith(".draft")) {
+              errorEl.querySelector("p").textContent = "Draft in progress — check back soon.";
+              const sub = errorEl.querySelectorAll("p")[1];
+              if (sub) sub.style.display = "none";
+            }
+            console.error("Failed to load post:", err);
+          }
+        }
+
+        /* ── Footnote Popup Tooltips ───────────────────────────────
+           On hover/focus/click of a .cite-ref superscript, renders a
+           floating card with the footnote text. Click prevents default
+           scroll-to-refs navigation and toggles the popup instead.
+           Styled with accent2 (violet) to differ from glossary tooltips
+           (accent/teal + dotted underline). One shared .fn-tooltip div
+           is reused across all footnotes.
+        ─────────────────────────────────────────────────────── */
+        function applyFootnoteTooltips(proseEl) {
+          const tipEl = document.createElement("div");
+          tipEl.className = "fn-tooltip";
+          // Set all visual styles inline via CSS variables — resolves correctly
+          // regardless of external stylesheet caching. z-index 9000 clears
+          // everything including sticky headers and glossary tooltips.
+          tipEl.style.cssText = [
+            "display:none",
+            "position:absolute",
+            "z-index:9000",
+            "background:var(--surface)",
+            "border:1px solid var(--accent2-dim)",
+            "border-left:3px solid var(--accent2)",
+            "border-radius:var(--radius,6px)",
+            "padding:0.65rem 0.85rem",
+            "max-width:320px",
+            "min-width:180px",
+            "pointer-events:auto",
+            "font-size:0.8rem",
+            "line-height:1.55",
+          ].join(";");
+          document.body.appendChild(tipEl);
+
+          let activeRef = null; // track which ref has tip open
+
+          function showFnTip(refEl) {
+            const href = refEl.getAttribute("href");
+            if (!href || !href.startsWith("#")) return;
+            const fnId = href.slice(1);
+            const fnEl = document.getElementById(fnId);
+            if (!fnEl) return;
+
+            const numEl = fnEl.querySelector(".cite-num");
+            const num = numEl ? numEl.textContent.trim() : "";
+
+            // Clone li, strip the number + back-arrow, keep footnote text
+            const clone = fnEl.cloneNode(true);
+            clone.querySelectorAll(".cite-num, .cite-back").forEach((el) => el.remove());
+            const text = clone.innerHTML.trim();
+
+            // Inline child styles so they render regardless of CSS cache state
+            const isDark = document.documentElement.getAttribute("data-theme") !== "light";
+            const accent2 = isDark ? "#a78bfa" : "#7c3aed";
+            const textColor = isDark ? "#e6edf3" : "#1f2328";
+            const shadow = isDark ? "0 4px 20px rgba(0,0,0,0.55)" : "0 4px 16px rgba(0,0,0,0.18)";
+            tipEl.style.boxShadow = shadow;
+
+            tipEl.innerHTML =
+              '<div style="font-family:var(--font-mono,monospace);font-weight:600;font-size:0.72rem;color:' +
+              accent2 +
+              ';margin-bottom:0.3rem;opacity:0.85;">fn ' +
+              num +
+              "</div>" +
+              '<div style="color:' +
+              textColor +
+              ';font-size:0.8rem;line-height:1.6;">' +
+              text +
+              "</div>";
+            tipEl.style.display = "block";
+
+            // Position: prefer above, flip below if near top of viewport
+            const rect = refEl.getBoundingClientRect();
+            const tipH = tipEl.offsetHeight;
+            const tipW = tipEl.offsetWidth;
+
+            let top = rect.top + window.scrollY - tipH - 10;
+            let left = rect.left + window.scrollX + rect.width / 2 - tipW / 2;
+
+            if (top < window.scrollY + 8) {
+              top = rect.bottom + window.scrollY + 8;
+            }
+            left = Math.max(8, Math.min(left, window.innerWidth - tipW - 8));
+
+            tipEl.style.top = top + "px";
+            tipEl.style.left = left + "px";
+          }
+
+          function hideFnTip() {
+            tipEl.style.display = "none";
+            activeRef = null;
+          }
+
+          let hideTimer = null;
+
+          function scheduleHide() {
+            if (hideTimer) clearTimeout(hideTimer);
+            hideTimer = setTimeout(hideFnTip, 220);
+          }
+
+          function cancelHide() {
+            if (hideTimer) {
+              clearTimeout(hideTimer);
+              hideTimer = null;
+            }
+          }
+
+          // Hover: show on enter, schedule hide on leave
+          proseEl.addEventListener("mouseover", (e) => {
+            const a = e.target.closest(".cite-ref a");
+            if (a) {
+              cancelHide();
+              showFnTip(a);
+            }
+          });
+          proseEl.addEventListener("mouseout", (e) => {
+            if (e.target.closest(".cite-ref a")) {
+              if (!e.relatedTarget || !e.relatedTarget.closest(".fn-tooltip")) {
+                scheduleHide();
+              }
+            }
+          });
+
+          // Keep tip open while cursor is inside it
+          tipEl.addEventListener("mouseenter", cancelHide);
+          tipEl.addEventListener("mouseleave", scheduleHide);
+
+          // Click: prevent scroll-to-refs, toggle tooltip instead
+          proseEl.addEventListener("click", (e) => {
+            const a = e.target.closest(".cite-ref a");
+            if (!a) return;
+            e.preventDefault();
+            if (activeRef === a && tipEl.style.display !== "none") {
+              hideFnTip();
+            } else {
+              cancelHide();
+              activeRef = a;
+              showFnTip(a);
+            }
+          });
+
+          // Keyboard focus
+          proseEl.addEventListener("focusin", (e) => {
+            const a = e.target.closest(".cite-ref a");
+            if (a) {
+              activeRef = a;
+              showFnTip(a);
+            }
+          });
+          proseEl.addEventListener("focusout", (e) => {
+            // Small delay so focus moving into tooltip doesn't close it
+            scheduleHide();
+          });
+
+          // Outside click closes
+          document.addEventListener("click", (e) => {
+            if (!e.target.closest(".cite-ref") && !e.target.closest(".fn-tooltip")) {
+              hideFnTip();
+            }
+          });
+
+          // Hide on scroll/resize
+          window.addEventListener("scroll", hideFnTip, { passive: true });
+          window.addEventListener("resize", hideFnTip, { passive: true });
+        }
+
+        /* ── Glossary Tooltips ──────────────────────────────────
+           Fetches glossary.json, scans prose text nodes for the
+           first occurrence of each term, wraps it in a .term-def
+           span, and shows a floating tooltip card on hover/focus.
+           Only the first occurrence per entry is marked up.
+        ─────────────────────────────────────────────────────── */
+        function applyGlossaryTooltips(proseEl, glossary) {
+          if (!glossary || !glossary.length) return;
+
+          // Build flat match list { text, entry }, longest first
+          const matchList = [];
+          for (const entry of glossary) {
+            matchList.push({ text: entry.term, entry });
+            for (const alias of entry.aliases || []) {
+              if (alias) matchList.push({ text: alias, entry });
+            }
+          }
+          matchList.sort((a, b) => b.text.length - a.text.length);
+
+          // Track which entry IDs have been applied (first-occurrence only)
+          const seen = new Set();
+
+          // Process a single text node: find all unmatched terms,
+          // split the node, insert .term-def spans.
+          function processTextNode(node) {
+            const text = node.textContent;
+            const parts = [];
+            let lastIdx = 0;
+            let changed = false;
+
+            while (lastIdx < text.length) {
+              let bestIdx = Infinity;
+              let bestEntry = null;
+              let bestText = "";
+
+              for (const { text: matchText, entry } of matchList) {
+                if (seen.has(entry.id)) continue;
+                const idx = text.indexOf(matchText, lastIdx);
+                if (idx === -1 || idx >= bestIdx) continue;
+
+                // Word-boundary guard for all single-word tokens
+                if (!matchText.includes(" ")) {
+                  const before = text[idx - 1];
+                  const after = text[idx + matchText.length];
+                  if ((before && /[A-Za-z0-9]/.test(before)) || (after && /[A-Za-z0-9]/.test(after))) continue;
+                }
+
+                bestIdx = idx;
+                bestEntry = entry;
+                bestText = matchText;
+              }
+
+              if (!bestEntry) break;
+
+              // Text before match
+              parts.push(document.createTextNode(text.slice(lastIdx, bestIdx)));
+
+              // The term span
+              const span = document.createElement("span");
+              span.className = "term-def";
+              span.textContent = bestText;
+              span.dataset.glossaryId = bestEntry.id;
+              span.setAttribute("tabindex", "0");
+              span.setAttribute("role", "button");
+              span.setAttribute("aria-label", bestEntry.term + ": " + bestEntry.short);
+              parts.push(span);
+
+              seen.add(bestEntry.id);
+              lastIdx = bestIdx + bestText.length;
+              changed = true;
+            }
+
+            if (!changed) return;
+
+            // Remaining text after last match
+            if (lastIdx < text.length) {
+              parts.push(document.createTextNode(text.slice(lastIdx)));
+            }
+
+            const frag = document.createDocumentFragment();
+            parts.forEach((p) => frag.appendChild(p));
+            node.parentNode.replaceChild(frag, node);
+          }
+
+          // Collect all eligible text nodes (exclude code/pre/a/existing spans)
+          const walker = document.createTreeWalker(proseEl, NodeFilter.SHOW_TEXT, {
+            acceptNode(node) {
+              let el = node.parentElement;
+              while (el && el !== proseEl) {
+                const tag = el.tagName;
+                if (tag === "CODE" || tag === "PRE" || tag === "A" || tag === "SCRIPT" || tag === "STYLE") {
+                  return NodeFilter.FILTER_REJECT;
+                }
+                if (
+                  el.classList.contains("term-def") ||
+                  el.classList.contains("gh-alert-title") ||
+                  el.classList.contains("post-title") ||
+                  el.classList.contains("toc-list")
+                ) {
+                  return NodeFilter.FILTER_REJECT;
+                }
+                el = el.parentElement;
+              }
+              // Skip nodes with only whitespace
+              return node.textContent.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+            },
+          });
+
+          // Collect first, then process (avoid live-DOM issues during iteration)
+          const nodes = [];
+          let n;
+          while ((n = walker.nextNode())) nodes.push(n);
+          nodes.forEach(processTextNode);
+
+          // ── Shared floating tooltip element ──────────────────
+          const tipEl = document.createElement("div");
+          tipEl.className = "term-tooltip";
+          tipEl.style.display = "none";
+          tipEl.style.position = "absolute";
+          document.body.appendChild(tipEl);
+
+          const glossaryMap = Object.fromEntries(glossary.map((e) => [e.id, e]));
+
+          function showTip(termEl) {
+            const entry = glossaryMap[termEl.dataset.glossaryId];
+            if (!entry) return;
+
+            let html = '<div class="term-tooltip-term">' + entry.term;
+            if (entry.full) {
+              html += ' <span class="term-tooltip-full">— ' + entry.full + "</span>";
+            }
+            html += "</div>";
+            html += '<div class="term-tooltip-def">' + entry.short + "</div>";
+            html += '<a href="./glossary.html#' + entry.id + '" class="term-tooltip-more">full entry →</a>';
+
+            tipEl.innerHTML = html;
+            tipEl.style.display = "block";
+
+            // Position: prefer above the term, clamp to viewport
+            const rect = termEl.getBoundingClientRect();
+            const tipH = tipEl.offsetHeight;
+            const tipW = tipEl.offsetWidth;
+
+            let top = rect.top + window.scrollY - tipH - 10;
+            let left = rect.left + window.scrollX + rect.width / 2 - tipW / 2;
+
+            // If above viewport, flip below
+            if (top < window.scrollY + 8) {
+              top = rect.bottom + window.scrollY + 8;
+            }
+            // Clamp horizontally
+            left = Math.max(8, Math.min(left, window.innerWidth - tipW - 8));
+
+            tipEl.style.top = top + "px";
+            tipEl.style.left = left + "px";
+          }
+
+          let hideTimer = null;
+
+          function hideTip() {
+            tipEl.style.display = "none";
+            if (hideTimer) {
+              clearTimeout(hideTimer);
+              hideTimer = null;
+            }
+          }
+
+          function scheduleHide() {
+            if (hideTimer) clearTimeout(hideTimer);
+            hideTimer = setTimeout(hideTip, 220);
+          }
+
+          function cancelHide() {
+            if (hideTimer) {
+              clearTimeout(hideTimer);
+              hideTimer = null;
+            }
+          }
+
+          // Mouse events on prose
+          proseEl.addEventListener("mouseover", (e) => {
+            const t = e.target.closest(".term-def");
+            if (t) {
+              cancelHide();
+              showTip(t);
+            }
+          });
+          proseEl.addEventListener("mouseout", (e) => {
+            // Only schedule hide if not moving into the tooltip itself
+            if (!e.relatedTarget || !e.relatedTarget.closest(".term-tooltip")) {
+              scheduleHide();
+            }
+          });
+
+          // Keep tip open while cursor is inside it; hide when it leaves
+          tipEl.addEventListener("mouseenter", cancelHide);
+          tipEl.addEventListener("mouseleave", scheduleHide);
+
+          // Keyboard / focus events
+          proseEl.addEventListener("focusin", (e) => {
+            const t = e.target.closest(".term-def");
+            if (t) showTip(t);
+          });
+          proseEl.addEventListener("focusout", () => hideTip());
+
+          // Close on outside click
+          document.addEventListener(
+            "click",
+            (e) => {
+              if (!e.target.closest(".term-def") && !e.target.closest(".term-tooltip")) {
+                hideTip();
+              }
+            },
+            { capture: false }
+          );
+
+          // Reposition on scroll/resize
+          window.addEventListener("scroll", hideTip, { passive: true });
+          window.addEventListener("resize", hideTip, { passive: true });
+        }
+
+        loadPost();
+      })();
+    </script>
+    <script src="./scripts/search.js" defer></script>
+    <script src="./scripts/search-modal.js" defer></script>
+  </body>
+</html>

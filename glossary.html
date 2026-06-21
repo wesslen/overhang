@@ -1,0 +1,1240 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Glossary — Overhang</title>
+    <meta
+      name="description"
+      content="A reference glossary of regulatory, banking, payments, and AI terms used across this blog."
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>"
+    />
+    <style>
+      /* ── Glossary-specific styles ─────────────────────────── */
+      .glossary-hero {
+        padding: 3rem 1.5rem 1.5rem;
+        max-width: 860px;
+        margin: 0 auto;
+      }
+      .glossary-hero h1 {
+        font-family: var(--font-mono);
+        font-size: clamp(1.4rem, 3vw, 2rem);
+        color: var(--text);
+        margin-bottom: 0.5rem;
+      }
+      .glossary-hero h1 .accent {
+        color: var(--accent);
+      }
+      .glossary-hero p {
+        color: var(--muted);
+        font-size: 0.95rem;
+        max-width: 600px;
+        margin-bottom: 1.5rem;
+      }
+
+      /* Search */
+      .glossary-search-wrap {
+        position: relative;
+        max-width: 400px;
+        margin-bottom: 1.5rem;
+      }
+      .glossary-search {
+        width: 100%;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 0.55rem 0.9rem 0.55rem 2.2rem;
+        color: var(--text);
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .glossary-search:focus {
+        border-color: var(--accent);
+      }
+      .glossary-search-icon {
+        position: absolute;
+        left: 0.7rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+        font-size: 0.85rem;
+        pointer-events: none;
+      }
+
+      /* Domain filter pills */
+      .glossary-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-bottom: 2rem;
+      }
+      .filter-pill {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 0.28rem 0.75rem;
+        font-size: 0.75rem;
+        font-family: var(--font-mono);
+        color: var(--muted);
+        cursor: pointer;
+        transition: all 0.15s;
+        user-select: none;
+      }
+      .filter-pill:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .filter-pill.active {
+        background: var(--accent-dim);
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .filter-pill .pill-count {
+        opacity: 0.7;
+        margin-left: 0.2rem;
+      }
+
+      /* Main glossary layout */
+      .glossary-body {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 0 1.5rem 4rem;
+      }
+
+      /* Domain section headers */
+      .domain-section {
+        margin-bottom: 2.5rem;
+      }
+      .domain-heading {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--accent2);
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 0.4rem;
+        margin-bottom: 1rem;
+      }
+
+      /* Entry cards */
+      .glossary-entry {
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--surface);
+        padding: 1rem 1.25rem;
+        margin-bottom: 0.6rem;
+        transition: border-color 0.15s;
+      }
+      .glossary-entry:hover {
+        border-color: var(--accent);
+      }
+      .glossary-entry.hidden {
+        display: none;
+      }
+
+      .entry-header {
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-bottom: 0.4rem;
+      }
+      .entry-term {
+        font-family: var(--font-mono);
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: var(--accent);
+      }
+      .entry-full {
+        font-size: 0.82rem;
+        color: var(--muted);
+      }
+      .entry-domain-tag {
+        font-size: 0.65rem;
+        font-family: var(--font-mono);
+        padding: 0.15rem 0.5rem;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        color: var(--muted);
+        margin-left: auto;
+        white-space: nowrap;
+      }
+      .entry-definition {
+        font-size: 0.88rem;
+        color: var(--text);
+        line-height: 1.65;
+        margin-bottom: 0.6rem;
+      }
+      .entry-posts {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+        align-items: center;
+      }
+      .entry-posts-label {
+        font-size: 0.68rem;
+        color: var(--muted);
+        font-family: var(--font-mono);
+        margin-right: 0.2rem;
+      }
+      .entry-post-link {
+        font-size: 0.68rem;
+        font-family: var(--font-mono);
+        color: var(--accent2);
+        background: var(--accent2-dim);
+        padding: 0.1rem 0.45rem;
+        border-radius: 4px;
+        border: 1px solid transparent;
+        text-decoration: none;
+        transition: border-color 0.15s;
+      }
+      .entry-post-link:hover {
+        border-color: var(--accent2);
+        opacity: 1;
+      }
+
+      /* No results state */
+      .glossary-empty {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+        display: none;
+      }
+      .glossary-empty.visible {
+        display: block;
+      }
+
+      /* Count badge */
+      .glossary-count {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--muted);
+        margin-bottom: 1.25rem;
+      }
+      .glossary-count span {
+        color: var(--accent);
+      }
+
+      /* ── Drill mode ──────────────────────────────────── */
+      .drill-toggle-wrap {
+        margin-top: -0.75rem;
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      #drill-toggle {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        color: var(--accent2);
+        background: var(--accent2-dim, rgba(124, 58, 237, 0.08));
+        border: 1px solid var(--accent2);
+        border-radius: 20px;
+        padding: 0.3rem 0.9rem;
+        cursor: pointer;
+        transition: all 0.15s;
+        user-select: none;
+      }
+      #drill-toggle:hover {
+        background: var(--accent2);
+        color: #fff;
+      }
+      #drill-scope-note {
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        color: var(--muted);
+      }
+
+      #drill-panel {
+        display: none;
+        max-width: 860px;
+        margin: 0 auto 2.5rem;
+        padding: 0 1.5rem;
+      }
+      #drill-panel.drill-active {
+        display: block;
+      }
+      .drill-card {
+        border: 1px solid var(--accent2);
+        border-radius: var(--radius);
+        background: var(--surface);
+        padding: 1.75rem 1.5rem 1.25rem;
+      }
+      .drill-meta {
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        color: var(--muted);
+        margin-bottom: 1rem;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+      .drill-domain-tag {
+        padding: 0.12rem 0.5rem;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        color: var(--muted);
+      }
+      .drill-progress {
+        margin-left: auto;
+      }
+      .drill-definition {
+        font-size: 0.95rem;
+        line-height: 1.7;
+        color: var(--text);
+        margin-bottom: 1.5rem;
+      }
+      .drill-input-row {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      #drill-input {
+        flex: 1;
+        min-width: 12rem;
+        font-family: var(--font-mono);
+        font-size: 0.9rem;
+        padding: 0.5rem 0.75rem;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        color: var(--text);
+        outline: none;
+        transition: border-color 0.15s;
+      }
+      #drill-input:focus {
+        border-color: var(--accent2);
+      }
+      #drill-input.drill-correct {
+        border-color: #22c55e;
+        background: rgba(34, 197, 94, 0.06);
+      }
+      #drill-input.drill-wrong {
+        border-color: #ef4444;
+        background: rgba(239, 68, 68, 0.06);
+      }
+      .drill-btn {
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius);
+        cursor: pointer;
+        transition: all 0.15s;
+        border: 1px solid;
+        white-space: nowrap;
+      }
+      #drill-check {
+        background: var(--accent2);
+        border-color: var(--accent2);
+        color: #fff;
+      }
+      #drill-check:hover {
+        opacity: 0.88;
+      }
+      #drill-check:disabled {
+        opacity: 0.4;
+        cursor: default;
+      }
+      #drill-skip {
+        background: transparent;
+        border-color: var(--border);
+        color: var(--muted);
+      }
+      #drill-skip:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .drill-feedback {
+        margin-top: 0.9rem;
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        min-height: 1.3rem;
+      }
+      .drill-feedback.correct {
+        color: #22c55e;
+      }
+      .drill-feedback.wrong {
+        color: #ef4444;
+      }
+      .drill-feedback .drill-answer {
+        color: var(--text);
+        font-weight: 600;
+      }
+      .drill-next-row {
+        margin-top: 1rem;
+        display: none;
+        gap: 0.5rem;
+      }
+      .drill-next-row.visible {
+        display: flex;
+      }
+      #drill-next {
+        background: var(--surface);
+        border-color: var(--accent2);
+        color: var(--accent2);
+      }
+      #drill-next:hover {
+        background: var(--accent2);
+        color: #fff;
+      }
+      #drill-reveal {
+        background: transparent;
+        border-color: var(--border);
+        color: var(--muted);
+        font-size: 0.75rem;
+      }
+      #drill-reveal:hover {
+        border-color: var(--muted);
+        color: var(--text);
+      }
+      .drill-end-msg {
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+        color: var(--muted);
+        padding: 1.5rem 0;
+        text-align: center;
+      }
+      .drill-end-msg span {
+        color: var(--accent);
+      }
+      .drill-hint-row {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-top: 0.55rem;
+      }
+      .drill-btn-hint {
+        background: transparent;
+        border-color: var(--border);
+        color: var(--muted);
+        font-size: 0.75rem;
+        padding: 0.3rem 0.7rem;
+        flex-shrink: 0;
+      }
+      .drill-btn-hint:hover:not(:disabled) {
+        border-color: var(--accent2);
+        color: var(--accent2);
+      }
+      .drill-btn-hint:disabled {
+        opacity: 0.3;
+        cursor: default;
+      }
+      .drill-hint-display {
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        color: var(--muted);
+        letter-spacing: 0.05em;
+        word-break: break-word;
+      }
+      .drill-hint-display b {
+        color: var(--accent2);
+        font-weight: 700;
+      }
+      @media (max-width: 640px) {
+        .drill-input-row {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        #drill-input {
+          width: 100%;
+        }
+      }
+
+      /* ── Sticky domain nav ─────────────────────────────── */
+      #glos-sticky-nav {
+        position: fixed;
+        left: 0;
+        right: 0;
+        z-index: 900;
+        background: var(--bg);
+        border-bottom: 1px solid var(--border);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        transform: translateY(-110%);
+        transition:
+          transform 0.22s ease,
+          opacity 0.22s ease;
+        opacity: 0;
+        pointer-events: none;
+      }
+      #glos-sticky-nav.gsnav-visible {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .gsnav-inner {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 0.42rem 1.5rem;
+        display: flex;
+        gap: 0.35rem;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      .gsnav-inner::-webkit-scrollbar {
+        display: none;
+      }
+      #glos-sticky-nav::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 2.5rem;
+        background: linear-gradient(to right, transparent, var(--bg) 80%);
+        pointer-events: none;
+      }
+      .gsnav-pill {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 0.2rem 0.65rem;
+        font-size: 0.68rem;
+        font-family: var(--font-mono);
+        color: var(--muted);
+        cursor: pointer;
+        transition: all 0.15s;
+        user-select: none;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .gsnav-pill:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .gsnav-pill.gsnav-active {
+        background: var(--accent-dim);
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .glossary-entry,
+      .domain-section {
+        scroll-margin-top: 116px;
+      }
+      @media (max-width: 640px) {
+        .gsnav-inner {
+          padding: 0.38rem 1rem;
+          gap: 0.28rem;
+        }
+        .gsnav-pill {
+          font-size: 0.63rem;
+          padding: 0.18rem 0.55rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <a href="./index.html" class="site-title">
+          // overhang
+          <span class="cursor">_</span>
+        </a>
+        <div class="header-actions">
+          <button class="search-trigger" id="search-modal-btn" title="Search (⌘K)" aria-label="Search">
+            <svg width="16" height="16" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M10 6.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-.691 3.516a4.5 4.5 0 1 1 .707-.707l2.838 2.837a.5.5 0 0 1-.708.708L9.31 10.016Z"
+                fill="currentColor"
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </button>
+          <a href="./glossary.html" class="nav-link active">glossary</a>
+          <a href="./about.html" class="nav-link">about</a>
+          <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+          <button class="theme-toggle" id="theme-toggle" title="Toggle dark/light mode" aria-label="Toggle theme">
+            <span id="theme-icon">☀️</span>
+          </button>
+        </div>
+      </div>
+    </header>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+      <a href="./glossary.html" class="nav-link active">glossary</a>
+      <a href="./about.html" class="nav-link">about</a>
+    </nav>
+
+    <!-- Sticky domain jump nav (shown via JS when filter bar scrolls out of view) -->
+    <div id="glos-sticky-nav" aria-hidden="true">
+      <div class="gsnav-inner" id="gsnav-inner">
+        <!-- pills populated by buildStickyNav() -->
+      </div>
+    </div>
+
+    <div class="glossary-hero">
+      <h1>
+        //
+        <span class="accent">glossary</span>
+      </h1>
+      <p>
+        Most debates in this space are vocabulary disputes in disguise. Everyone nods at 'guardrail' or 'HITL' or
+        'agentic AI' and walks away with a different concept in mind — and the gap compounds fast when the tooling that
+        defines the terms ships new versions weekly. These entries record how I'm using each term across the posts: a
+        working reference, not an industry standard.
+      </p>
+
+      <div class="glossary-search-wrap">
+        <span class="glossary-search-icon">⌕</span>
+        <input
+          type="search"
+          class="glossary-search"
+          id="glossary-search"
+          placeholder="search terms..."
+          aria-label="Search glossary"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="glossary-filters" id="glossary-filters" role="group" aria-label="Filter by domain">
+        <!-- populated by JS -->
+      </div>
+
+      <div class="drill-toggle-wrap">
+        <button id="drill-toggle">// drill mode</button>
+        <span id="drill-scope-note"></span>
+      </div>
+    </div>
+
+    <div id="drill-panel" role="region" aria-label="Glossary drill">
+      <div class="drill-card">
+        <div class="drill-meta">
+          <span id="drill-domain-tag" class="drill-domain-tag"></span>
+          <span id="drill-progress" class="drill-progress"></span>
+        </div>
+        <div id="drill-definition" class="drill-definition"></div>
+        <div class="drill-input-row">
+          <input
+            type="text"
+            id="drill-input"
+            placeholder="type the term…"
+            autocomplete="off"
+            spellcheck="false"
+            aria-label="Your answer"
+          />
+          <button id="drill-check" class="drill-btn">check</button>
+          <button id="drill-skip" class="drill-btn">skip →</button>
+        </div>
+        <div class="drill-hint-row">
+          <button id="drill-hint-btn" class="drill-btn drill-btn-hint">hint</button>
+          <span id="drill-hint-display" class="drill-hint-display"></span>
+        </div>
+        <div id="drill-feedback" class="drill-feedback"></div>
+        <div id="drill-next-row" class="drill-next-row">
+          <button id="drill-next" class="drill-btn">next →</button>
+          <button id="drill-reveal" class="drill-btn">show answer</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="glossary-body">
+      <div class="glossary-count" id="glossary-count"></div>
+      <div id="glossary-content"><!-- populated by JS --></div>
+      <div class="glossary-empty" id="glossary-empty">no matching terms</div>
+    </div>
+
+    <footer class="site-footer">
+      <p>
+        written &amp; reviewed with Claude Cowork
+        <br />
+        <a href="https://github.com/wesslen/overhang" target="_blank" rel="noopener">view source on GitHub</a>
+      </p>
+      <p>
+        © 2026 Ryan Wesslen ·
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>
+      </p>
+      <p class="footer-disclaimer">
+        Views expressed here are my own and do not represent those of my employer. Nothing here is legal, regulatory, or
+        financial advice.
+      </p>
+    </footer>
+
+    <script>
+      (() => {
+        "use strict";
+
+        /* ── Theme ──────────────────────────────────────── */
+        const root = document.documentElement;
+        const toggleBtn = document.getElementById("theme-toggle");
+        const themeIcon = document.getElementById("theme-icon");
+        const savedTheme = localStorage.getItem("overhang-theme") || "light";
+        function applyTheme(t) {
+          root.setAttribute("data-theme", t);
+          themeIcon.textContent = t === "dark" ? "☀️" : "🌙";
+          localStorage.setItem("overhang-theme", t);
+        }
+        applyTheme(savedTheme);
+        toggleBtn.addEventListener("click", () =>
+          applyTheme(root.getAttribute("data-theme") === "dark" ? "light" : "dark")
+        );
+
+        /* ── Progress bar ───────────────────────────────── */
+        const bar = document.getElementById("progress-bar");
+        window.addEventListener(
+          "scroll",
+          () => {
+            const d = document.documentElement.scrollHeight - window.innerHeight;
+            bar.style.width = d > 0 ? Math.min((window.scrollY / d) * 100, 100) + "%" : "0%";
+          },
+          { passive: true }
+        );
+
+        /* ── Domain config ──────────────────────────────── */
+        const DOMAIN_LABELS = {
+          macro: "Macro & Economics",
+          "capital-markets": "Capital Markets",
+          "private-credit": "Private Credit",
+          accounting: "Accounting",
+          ai: "AI / ML",
+          policy: "Policy & Politics",
+        };
+        const DOMAIN_ORDER = ["macro", "capital-markets", "private-credit", "accounting", "ai", "policy"];
+
+        /* ── Post title lookup (best-effort) ───────────── */
+        /* Populated as Overhang posts are published (slug → display title). */
+        const POST_TITLES = {};
+
+        /* ── Render ─────────────────────────────────────── */
+        let glossary = [];
+        let activeFilter = "all";
+        let searchQuery = "";
+
+        function buildFilters() {
+          const filtersEl = document.getElementById("glossary-filters");
+          const counts = {};
+          glossary.forEach((e) => {
+            counts[e.domain] = (counts[e.domain] || 0) + 1;
+          });
+
+          /* ── Mobile Nav (hamburger) ─────────────────────── */
+          (function () {
+            var btn = document.getElementById("nav-hamburger");
+            var nav = document.getElementById("mobile-nav");
+            if (!btn || !nav) return;
+            function openMenu() {
+              nav.classList.add("open");
+              btn.setAttribute("aria-expanded", "true");
+              btn.textContent = "✕";
+            }
+            function closeMenu() {
+              nav.classList.remove("open");
+              btn.setAttribute("aria-expanded", "false");
+              btn.innerHTML = "&#9776;";
+            }
+            btn.addEventListener("click", function (e) {
+              e.stopPropagation();
+              nav.classList.contains("open") ? closeMenu() : openMenu();
+            });
+            document.addEventListener("keydown", function (e) {
+              if (e.key === "Escape") closeMenu();
+            });
+            nav.querySelectorAll(".nav-link").forEach(function (link) {
+              link.addEventListener("click", closeMenu);
+            });
+            document.addEventListener("click", function (e) {
+              if (!btn.contains(e.target) && !nav.contains(e.target)) closeMenu();
+            });
+          })();
+          const allBtn = document.createElement("button");
+          allBtn.className = "filter-pill active";
+          allBtn.dataset.domain = "all";
+          allBtn.innerHTML = `all <span class="pill-count">(${glossary.length})</span>`;
+          filtersEl.appendChild(allBtn);
+
+          DOMAIN_ORDER.forEach((d) => {
+            if (!counts[d]) return;
+            const btn = document.createElement("button");
+            btn.className = "filter-pill";
+            btn.dataset.domain = d;
+            btn.innerHTML = `${DOMAIN_LABELS[d] || d} <span class="pill-count">(${counts[d]})</span>`;
+            filtersEl.appendChild(btn);
+          });
+
+          filtersEl.addEventListener("click", (e) => {
+            const pill = e.target.closest(".filter-pill");
+            if (!pill) return;
+            activeFilter = pill.dataset.domain;
+            filtersEl.querySelectorAll(".filter-pill").forEach((p) => p.classList.toggle("active", p === pill));
+            renderEntries();
+            syncStickyNavVisibility();
+          });
+        }
+
+        function renderEntries() {
+          const q = searchQuery.toLowerCase().trim();
+          const container = document.getElementById("glossary-content");
+          const emptyEl = document.getElementById("glossary-empty");
+          const countEl = document.getElementById("glossary-count");
+          container.innerHTML = "";
+
+          const filtered = glossary.filter((e) => {
+            if (activeFilter !== "all" && e.domain !== activeFilter) return false;
+            if (!q) return true;
+            return (
+              e.term.toLowerCase().includes(q) ||
+              (e.full || "").toLowerCase().includes(q) ||
+              e.definition.toLowerCase().includes(q) ||
+              (e.aliases || []).some((a) => a.toLowerCase().includes(q))
+            );
+          });
+
+          // Group by domain in DOMAIN_ORDER
+          const grouped = {};
+          filtered.forEach((e) => {
+            if (!grouped[e.domain]) grouped[e.domain] = [];
+            grouped[e.domain].push(e);
+          });
+
+          // Auto-detect any domains not in DOMAIN_ORDER and append them
+          const knownDomains = new Set(DOMAIN_ORDER);
+          const extraDomains = Object.keys(grouped)
+            .filter((d) => !knownDomains.has(d))
+            .sort();
+          const effectiveDomainOrder = [...DOMAIN_ORDER, ...extraDomains];
+
+          let totalShown = 0;
+          effectiveDomainOrder.forEach((domain) => {
+            if (!grouped[domain] || !grouped[domain].length) return;
+            const entries = grouped[domain].sort((a, b) => a.term.localeCompare(b.term));
+            totalShown += entries.length;
+
+            const section = document.createElement("div");
+            section.className = "domain-section";
+            section.innerHTML = `<div class="domain-heading">${DOMAIN_LABELS[domain] || domain}</div>`;
+
+            entries.forEach((entry) => {
+              const div = document.createElement("div");
+              div.className = "glossary-entry";
+              div.id = entry.id;
+
+              const postLinks = (entry.used_in || [])
+                .map((slug) => {
+                  const title = POST_TITLES[slug] || slug;
+                  return `<a href="./post.html?slug=${encodeURIComponent(slug)}" class="entry-post-link" title="${title}">${slug}</a>`;
+                })
+                .join("");
+
+              div.innerHTML = `
+              <div class="entry-header">
+                <span class="entry-term">${entry.term}</span>
+                ${entry.full ? `<span class="entry-full">— ${entry.full}</span>` : ""}
+                <span class="entry-domain-tag">${DOMAIN_LABELS[entry.domain] || entry.domain}</span>
+              </div>
+              <div class="entry-definition">${entry.definition}</div>
+              ${postLinks ? `<div class="entry-posts"><span class="entry-posts-label">used in:</span>${postLinks}</div>` : ""}
+            `;
+              section.appendChild(div);
+            });
+
+            container.appendChild(section);
+          });
+
+          const total = glossary.length;
+          if (totalShown === 0) {
+            emptyEl.classList.add("visible");
+            countEl.innerHTML = "";
+          } else {
+            emptyEl.classList.remove("visible");
+            countEl.innerHTML = `showing <span>${totalShown}</span> of <span>${total}</span> terms`;
+          }
+        }
+
+        /* ── Search ─────────────────────────────────────── */
+        document.getElementById("glossary-search").addEventListener("input", (e) => {
+          searchQuery = e.target.value;
+          renderEntries();
+        });
+
+        /* ── Deep-link to entry ─────────────────────────── */
+        function scrollToHash() {
+          const hash = window.location.hash.slice(1);
+          if (!hash) return;
+          setTimeout(() => {
+            const el = document.getElementById(hash);
+            if (el) {
+              el.scrollIntoView({ behavior: "smooth", block: "center" });
+              el.style.borderColor = "var(--accent)";
+              setTimeout(() => (el.style.borderColor = ""), 1500);
+            }
+          }, 100);
+        }
+
+        /* ── Init ───────────────────────────────────────── */
+        fetch("./glossary.json")
+          .then((r) => r.json())
+          .then((data) => {
+            glossary = data.sort((a, b) => a.term.localeCompare(b.term));
+            buildFilters();
+            renderEntries();
+            buildStickyNav();
+            setupFilterBarObserver();
+            scrollToHash();
+          })
+          .catch((err) => {
+            document.getElementById("glossary-content").innerHTML =
+              '<p style="color:var(--muted);font-family:var(--font-mono);font-size:0.85rem">⚠ Could not load glossary.json</p>';
+            console.error(err);
+          });
+
+        /* ── Sticky domain nav ──────────────────────────────────────────── */
+
+        const gsNav = document.getElementById("glos-sticky-nav");
+        const gsNavInner = document.getElementById("gsnav-inner");
+
+        /* Build one pill per domain that has entries */
+        function buildStickyNav() {
+          gsNavInner.innerHTML = "";
+          const domains = DOMAIN_ORDER.filter((d) => glossary.some((e) => e.domain === d));
+          domains.forEach((domain) => {
+            const btn = document.createElement("button");
+            btn.className = "gsnav-pill";
+            btn.dataset.domain = domain;
+            btn.textContent = DOMAIN_LABELS[domain] || domain;
+            btn.addEventListener("click", () => scrollToDomain(domain));
+            gsNavInner.appendChild(btn);
+          });
+
+          /* Position nav below the sticky site header */
+          const headerH = document.querySelector(".site-header")?.offsetHeight || 56;
+          gsNav.style.top = headerH + "px";
+        }
+
+        /* Smooth-scroll to a domain section, clearing both sticky bars */
+        function scrollToDomain(domain) {
+          const label = DOMAIN_LABELS[domain] || domain;
+          for (const section of document.querySelectorAll(".domain-section")) {
+            const h = section.querySelector(".domain-heading");
+            if (h && h.textContent.trim() === label) {
+              const headerH = document.querySelector(".site-header")?.offsetHeight || 56;
+              const navH = gsNav.offsetHeight || 0;
+              const top = section.getBoundingClientRect().top + window.scrollY - headerH - navH - 8;
+              window.scrollTo({ top, behavior: "smooth" });
+              return;
+            }
+          }
+        }
+
+        /* Highlight the pill matching the current domain; scroll it into view */
+        function updateStickyPill(domain) {
+          let found = false;
+          gsNavInner.querySelectorAll(".gsnav-pill").forEach((p) => {
+            const active = p.dataset.domain === domain;
+            p.classList.toggle("gsnav-active", active);
+            if (active && !found) {
+              found = true;
+              /* Scroll pill into view within the horizontal container */
+              const pillL = p.offsetLeft;
+              const pillR = pillL + p.offsetWidth;
+              const contL = gsNavInner.scrollLeft;
+              const contR = contL + gsNavInner.offsetWidth;
+              if (pillL < contL + 24) {
+                gsNavInner.scrollTo({ left: pillL - 24, behavior: "smooth" });
+              } else if (pillR > contR - 24) {
+                gsNavInner.scrollTo({ left: pillR - gsNavInner.offsetWidth + 24, behavior: "smooth" });
+              }
+            }
+          });
+        }
+
+        /* Scroll-spy: determine which domain section is at the top of viewport */
+        function runScrollSpy() {
+          if (activeFilter !== "all") return;
+          const headerH = document.querySelector(".site-header")?.offsetHeight || 56;
+          const navH = gsNav.classList.contains("gsnav-visible") ? gsNav.offsetHeight : 0;
+          const offset = headerH + navH + 24;
+
+          let currentDomain = null;
+          for (const section of document.querySelectorAll(".domain-section")) {
+            if (section.getBoundingClientRect().top <= offset) {
+              const headingText = section.querySelector(".domain-heading")?.textContent.trim();
+              for (const [d, label] of Object.entries(DOMAIN_LABELS)) {
+                if (label === headingText) {
+                  currentDomain = d;
+                  break;
+                }
+              }
+            } else {
+              break; /* sections are in order, stop once we're past the fold */
+            }
+          }
+          if (currentDomain) updateStickyPill(currentDomain);
+        }
+
+        /* Show/hide sticky nav using IntersectionObserver on the original filter bar */
+        function setupFilterBarObserver() {
+          const filtersEl = document.getElementById("glossary-filters");
+          new IntersectionObserver(
+            ([entry]) => {
+              /* Only show sticky nav in "all" mode — filtered views have one section */
+              const show = !entry.isIntersecting && activeFilter === "all";
+              gsNav.classList.toggle("gsnav-visible", show);
+              gsNav.setAttribute("aria-hidden", show ? "false" : "true");
+              if (show) runScrollSpy();
+            },
+            { threshold: 0 }
+          ).observe(filtersEl);
+        }
+
+        /* Re-evaluate sticky nav visibility after filter changes */
+        function syncStickyNavVisibility() {
+          const filtersEl = document.getElementById("glossary-filters");
+          const rect = filtersEl.getBoundingClientRect();
+          const scrolledPast = rect.bottom < 0;
+          const show = scrolledPast && activeFilter === "all";
+          gsNav.classList.toggle("gsnav-visible", show);
+          gsNav.setAttribute("aria-hidden", show ? "false" : "true");
+        }
+
+        /* Attach scroll listener for spy */
+        window.addEventListener("scroll", runScrollSpy, { passive: true });
+
+        /* ── Drill mode ─────────────────────────────────── */
+        (function () {
+          const toggleBtn = document.getElementById("drill-toggle");
+          const panel = document.getElementById("drill-panel");
+          const scopeNote = document.getElementById("drill-scope-note");
+          const domainTag = document.getElementById("drill-domain-tag");
+          const progressEl = document.getElementById("drill-progress");
+          const defEl = document.getElementById("drill-definition");
+          const input = document.getElementById("drill-input");
+          const checkBtn = document.getElementById("drill-check");
+          const skipBtn = document.getElementById("drill-skip");
+          const feedbackEl = document.getElementById("drill-feedback");
+          const nextRow = document.getElementById("drill-next-row");
+          const nextBtn = document.getElementById("drill-next");
+          const revealBtn = document.getElementById("drill-reveal");
+          const hintBtn = document.getElementById("drill-hint-btn");
+          const hintDisplay = document.getElementById("drill-hint-display");
+
+          let hintLevel = 0;
+
+          /* Build a crossword-style pattern: level 1 = first char, level 2 = first 3 chars */
+          function makeHintPattern(term, revealN) {
+            return term
+              .split(/\s+/)
+              .map((word) =>
+                word
+                  .split("")
+                  .map((ch, i) => (i < revealN ? `<b>${ch}</b>` : "–"))
+                  .join("\u202f")
+              )
+              .join("\u2002\u2002");
+          }
+
+          hintBtn.addEventListener("click", () => {
+            if (idx >= deck.length) return;
+            hintLevel++;
+            const entry = deck[idx];
+            const revealN = hintLevel === 1 ? 1 : 3;
+            hintDisplay.innerHTML = makeHintPattern(entry.term, revealN);
+            if (hintLevel >= 2) {
+              hintBtn.disabled = true;
+              hintBtn.textContent = "hint ✓";
+            }
+          });
+
+          let deck = [];
+          let idx = 0;
+          let revealed = false;
+
+          function shuffleDeck(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+          }
+
+          function buildDeck() {
+            const terms = glossary.filter((e) => {
+              if (activeFilter !== "all" && e.domain !== activeFilter) return false;
+              if (searchQuery) {
+                const q = searchQuery.toLowerCase();
+                return (
+                  e.term.toLowerCase().includes(q) ||
+                  (e.full || "").toLowerCase().includes(q) ||
+                  e.definition.toLowerCase().includes(q)
+                );
+              }
+              return true;
+            });
+            return shuffleDeck(terms);
+          }
+
+          function getPrompt(entry) {
+            return entry.short || entry.definition.split(".")[0] + ".";
+          }
+
+          function normalize(s) {
+            return s
+              .trim()
+              .toLowerCase()
+              .replace(/[^a-z0-9\s]/g, "")
+              .replace(/\s+/g, " ");
+          }
+          /* loose: strip ALL spaces, hyphens, punctuation — "rollout" matches "Roll Out" */
+          function normalizeLoose(s) {
+            return s
+              .trim()
+              .toLowerCase()
+              .replace(/[^a-z0-9]/g, "");
+          }
+
+          function isCorrect(entry, answer) {
+            const ans = normalize(answer);
+            const ansLoose = normalizeLoose(answer);
+            if (!ans) return false;
+            const candidates = [entry.term, entry.full || "", ...(entry.aliases || [])].filter(Boolean);
+            return candidates.some((c) => normalize(c) === ans || normalizeLoose(c) === ansLoose);
+          }
+
+          function showCard() {
+            if (idx >= deck.length) {
+              defEl.innerHTML = `<div class="drill-end-msg">// <span>deck complete</span> — ${deck.length} terms drilled.</div>`;
+              domainTag.textContent = "";
+              progressEl.textContent = "";
+              input.style.display = "none";
+              checkBtn.style.display = "none";
+              skipBtn.style.display = "none";
+              feedbackEl.textContent = "";
+              nextRow.classList.add("visible");
+              nextBtn.textContent = "restart →";
+              revealBtn.style.display = "none";
+              return;
+            }
+            const entry = deck[idx];
+            domainTag.textContent = DOMAIN_LABELS[entry.domain] || entry.domain;
+            progressEl.textContent = `${idx + 1} / ${deck.length}`;
+            defEl.textContent = getPrompt(entry);
+            input.value = "";
+            input.className = "";
+            input.disabled = false;
+            input.style.display = "";
+            checkBtn.style.display = "";
+            checkBtn.disabled = false;
+            skipBtn.style.display = "";
+            feedbackEl.textContent = "";
+            feedbackEl.className = "drill-feedback";
+            nextRow.classList.remove("visible");
+            revealBtn.style.display = "";
+            revealBtn.textContent = "show answer";
+            revealed = false;
+            hintLevel = 0;
+            hintBtn.disabled = false;
+            hintBtn.textContent = "hint";
+            hintDisplay.textContent = "";
+            nextBtn.textContent = "next →";
+            setTimeout(() => input.focus(), 50);
+          }
+
+          function submitAnswer() {
+            const entry = deck[idx];
+            const answer = input.value;
+            if (!answer.trim()) return;
+            checkBtn.disabled = true;
+            input.disabled = true;
+            if (isCorrect(entry, answer)) {
+              input.classList.add("drill-correct");
+              feedbackEl.className = "drill-feedback correct";
+              feedbackEl.textContent = "✓ correct";
+            } else {
+              input.classList.add("drill-wrong");
+              feedbackEl.className = "drill-feedback wrong";
+              feedbackEl.innerHTML = `✗ the term is <span class="drill-answer">${entry.term}</span>`;
+            }
+            nextRow.classList.add("visible");
+          }
+
+          function advance() {
+            if (nextBtn.textContent === "restart →") {
+              deck = buildDeck();
+              idx = 0;
+              input.style.display = "";
+              checkBtn.style.display = "";
+              skipBtn.style.display = "";
+              showCard();
+              return;
+            }
+            idx++;
+            showCard();
+          }
+
+          checkBtn.addEventListener("click", submitAnswer);
+          input.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" && !checkBtn.disabled) submitAnswer();
+          });
+
+          skipBtn.addEventListener("click", () => {
+            const entry = deck[idx];
+            feedbackEl.className = "drill-feedback wrong";
+            feedbackEl.innerHTML = `skipped — <span class="drill-answer">${entry.term}</span>`;
+            checkBtn.disabled = true;
+            input.disabled = true;
+            nextRow.classList.add("visible");
+            revealBtn.style.display = "none";
+          });
+
+          nextBtn.addEventListener("click", advance);
+
+          revealBtn.addEventListener("click", () => {
+            if (revealed) return;
+            revealed = true;
+            const entry = deck[idx];
+            feedbackEl.className = "drill-feedback";
+            feedbackEl.innerHTML = `answer: <span class="drill-answer">${entry.term}</span>`;
+            revealBtn.style.display = "none";
+          });
+
+          function updateScopeNote() {
+            const count = deck.length;
+            const scope =
+              activeFilter === "all" ? "all terms" : (DOMAIN_LABELS[activeFilter] || activeFilter) + " terms";
+            scopeNote.textContent = count > 0 ? `${count} ${scope}` : "";
+          }
+
+          let drillOpen = false;
+          toggleBtn.addEventListener("click", () => {
+            drillOpen = !drillOpen;
+            panel.classList.toggle("drill-active", drillOpen);
+            toggleBtn.textContent = drillOpen ? "// exit drill" : "// drill mode";
+            if (drillOpen) {
+              deck = buildDeck();
+              idx = 0;
+              input.style.display = "";
+              checkBtn.style.display = "";
+              skipBtn.style.display = "";
+              updateScopeNote();
+              showCard();
+              panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            }
+          });
+
+          /* Rebuild deck when domain filter changes while drill is open */
+          document.getElementById("glossary-filters").addEventListener("click", () => {
+            if (!drillOpen) return;
+            setTimeout(() => {
+              deck = buildDeck();
+              idx = 0;
+              updateScopeNote();
+              showCard();
+            }, 20);
+          });
+        })();
+      })();
+    </script>
+    <script src="./scripts/search.js" defer></script>
+    <script src="./scripts/search-modal.js" defer></script>
+  </body>
+</html>

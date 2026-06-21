@@ -1,0 +1,146 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  lint:
+    name: Lint & Format Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ── Node setup (htmlhint, markdownlint, prettier) ──────
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      # ── HTML linting ───────────────────────────────────────
+      - name: Lint HTML
+        run: npx htmlhint "*.html"
+
+      # ── Markdown linting ───────────────────────────────────
+      - name: Lint Markdown
+        run: npx markdownlint-cli "posts/*.md" --ignore "posts/reference-audit.md"
+
+      # ── Prettier format check (HTML, CSS, JS in-file) ──────
+      - name: Check formatting
+        run: npx prettier --check "*.html" "*.css"
+
+  quiz-check:
+    name: Quiz Validate & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      # ── Quiz schema validation + engine unit tests ─────────
+      # validate:quiz checks schema + cross-references;
+      # test:quiz runs the engine unit tests + pool round-trips.
+      - name: Validate & test quizzes
+        run: npm run build:quiz
+
+  slop-check:
+    name: Prose Slop Guard
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ── Python / uv setup ──────────────────────────────────
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      # ── Detect changed post files ──────────────────────────
+      # On a PR, diff against the base branch.
+      # On a direct push, diff against the previous commit.
+      # If no markdown posts changed, skip the check.
+      - name: Get changed post files
+        id: changed
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE="${{ github.event.pull_request.base.sha }}"
+          else
+            BASE="${{ github.event.before }}"
+          fi
+          FILES=$(git diff --name-only "$BASE" HEAD -- 'posts/*.md' \
+            | grep -v 'posts/index\.json' || true)
+          echo "files=$FILES" >> "$GITHUB_OUTPUT"
+          if [ -n "$FILES" ]; then
+            echo "Changed posts:"
+            echo "$FILES"
+          else
+            echo "No post files changed — skipping slop check."
+          fi
+
+      # ── Run slop check on changed posts ───────────────────
+      # Threshold 60 = "light" band or better.
+      # Exit 1 if any changed post scores below 60.
+      - name: Check for AI slop
+        if: steps.changed.outputs.files != ''
+        run: |
+          uv run --with slop-guard \
+            python scripts/check-slop.py \
+            --threshold 60 \
+            --verbose \
+            ${{ steps.changed.outputs.files }}
+
+  build-search-index:
+    name: Rebuild Search Index
+    runs-on: ubuntu-latest
+    # Only on push — PR builds don't have write access to commit back
+    if: github.event_name == 'push'
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # GITHUB_TOKEN with contents:write permission (set at job level)
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build search index
+        run: npm run build:search
+
+      - name: Commit updated index (if changed)
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add search-index.json
+          if git diff --staged --quiet; then
+            echo "search-index.json is already up to date — skipping commit"
+          else
+            git commit -m "chore: rebuild search-index.json [skip ci]"
+            git push
+          fi

@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Overhang: An opinionated course on the money behind the AI boom</title>
+    <meta
+      name="description"
+      content="An opinionated course on the economics, financing, and politics of the AI boom — how the buildout is financed, where private credit masks risk, and how shifting public opinion and policy could reprice it all. Read it as a blog, or take it as a course."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Overhang: An opinionated course on the money behind the AI boom" />
+    <meta property="og:title" content="Overhang: An opinionated course on the money behind the AI boom" />
+    <meta
+      property="og:description"
+      content="An opinionated course on the economics, financing, and politics of the AI boom — how the buildout is financed, where private credit masks risk, and how public opinion and policy could reprice it all."
+    />
+    <meta property="og:url" content="https://wesslen.github.io/overhang/" />
+    <meta property="og:image" content="https://wesslen.github.io/overhang/og-default.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Overhang: An opinionated course on the money behind the AI boom" />
+    <meta
+      name="twitter:description"
+      content="An opinionated course on the economics, financing, and politics of the AI boom — how the buildout is financed, where private credit masks risk, and how public opinion and policy could reprice it all."
+    />
+    <meta name="twitter:image" content="https://wesslen.github.io/overhang/og-default.png" />
+    <link rel="canonical" href="https://wesslen.github.io/overhang/" />
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./scripts/search.js" defer></script>
+    <script src="./scripts/search-modal.js" defer></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>"
+    />
+    <script src="./quizzes/quiz-engine.js"></script>
+  </head>
+  <body>
+    <!-- Reading progress bar -->
+    <div id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+    <!-- ── Site Header ────────────────────────────────────── -->
+    <header class="site-header">
+      <div class="header-inner">
+        <a href="./index.html" class="site-title">
+          // overhang
+          <span class="cursor">_</span>
+        </a>
+        <div class="header-actions">
+          <button class="search-trigger" id="search-modal-btn" title="Search (⌘K)" aria-label="Search">
+            <svg width="16" height="16" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M10 6.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-.691 3.516a4.5 4.5 0 1 1 .707-.707l2.838 2.837a.5.5 0 0 1-.708.708L9.31 10.016Z"
+                fill="currentColor"
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </button>
+          <a href="./glossary.html" class="nav-link">glossary</a>
+          <a href="./about.html" class="nav-link">about</a>
+          <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+          <button class="theme-toggle" id="theme-toggle" title="Toggle dark/light mode" aria-label="Toggle theme">
+            <span id="theme-icon">☀️</span>
+          </button>
+        </div>
+      </div>
+    </header>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+      <a href="./glossary.html" class="nav-link">glossary</a>
+      <a href="./about.html" class="nav-link">about</a>
+    </nav>
+
+    <!-- ── Hero ──────────────────────────────────────────── -->
+    <section class="hero" aria-label="Site introduction">
+      <div class="hero-content">
+        <p class="hero-eyebrow">// Ryan Wesslen</p>
+        <h1>
+          Overhang
+          <br />
+          <span style="font-size: 0.55em; font-weight: 400; opacity: 0.75; letter-spacing: 0.01em">
+            An opinionated course on the money behind the AI boom
+          </span>
+        </h1>
+        <p class="hero-desc">
+          A course on the economics, financing, and politics of the AI buildout, with a point of view. How the
+          hyperscaler CapEx gets financed, where private credit hides risk, and how shifting public opinion and policy
+          could reprice it all. Read it as a blog, or take it as a course.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Modules ────────────────────────────────────────── -->
+    <section class="index-modules" id="main-content">
+      <div class="index-modules-inner">
+        <!-- Intro post feature card -->
+        <div id="intro-feature"></div>
+        <!-- Module grid -->
+        <div class="slides-grid" id="slides-grid" aria-label="Course modules"></div>
+        <div class="completion-zone completion-zone--locked" id="completion-zone" aria-label="Course complete">
+          <div class="completion-zone-inner">
+            <span class="completion-label completion-label--locked">// course in progress</span>
+            <span class="completion-label completion-label--done">// course complete</span>
+            <p class="completion-desc completion-desc--locked">
+              pass all module tests to unlock the certificate and final exam
+            </p>
+            <p class="completion-desc completion-desc--done">you've worked through every module. that's rare.</p>
+            <div class="completion-actions">
+              <button class="completion-cert-btn" id="open-cert-btn">view certificate ✦</button>
+              <button class="completion-exam-btn" id="open-final-exam-btn">take the final exam →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Progress backup / restore ─────────────────── -->
+        <div class="quiz-backup-zone" id="quiz-backup-zone">
+          <span class="quiz-backup-label">// progress backup</span>
+          <div class="quiz-backup-actions">
+            <button class="quiz-backup-btn" id="save-progress-btn">save progress ↓</button>
+            <label class="quiz-backup-btn quiz-backup-btn-upload" id="load-progress-label" tabindex="0" role="button">
+              upload progress ↑
+              <input
+                type="file"
+                id="progress-file-input"
+                accept=".json,.txt"
+                aria-label="Upload progress file"
+                tabindex="-1"
+              />
+            </label>
+          </div>
+          <p class="quiz-backup-note">
+            Progress lives in this browser only — save a backup to restore it later or continue on another device. The
+            file is plain JSON you can inspect; the
+            <code>sig</code>
+            field verifies integrity, so editing progress values will break the import.
+          </p>
+          <div id="quiz-backup-status" class="quiz-backup-status" aria-live="polite"></div>
+        </div>
+
+        <!-- ── Sister course ─────────────────────────────── -->
+        <a
+          href="https://wesslen.github.io/"
+          class="sister-course-card"
+          style="
+            display: block;
+            margin-top: 2.5rem;
+            padding: 1.25rem 1.5rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--surface);
+            text-decoration: none;
+            transition: border-color 0.15s;
+          "
+        >
+          <span
+            style="
+              font-family: var(--font-mono);
+              font-size: 0.7rem;
+              text-transform: uppercase;
+              letter-spacing: 0.1em;
+              color: var(--accent2);
+            "
+          >
+            // sister course
+          </span>
+          <span style="display: block; margin-top: 0.4rem; font-weight: 600; font-size: 1.05rem; color: var(--text)">
+            Drift →
+          </span>
+          <p style="margin: 0.35rem 0 0; font-size: 0.88rem; color: var(--muted); line-height: 1.55">
+            An opinionated course on banking GenAI risk — governance, agent engineering, evals, adversarial testing, and
+            human oversight.
+          </p>
+        </a>
+      </div>
+    </section>
+
+    <!-- ── Footer ────────────────────────────────────────── -->
+    <footer class="site-footer">
+      <p>
+        written &amp; reviewed with Claude Cowork
+        <br />
+        <a href="https://github.com/wesslen/overhang" target="_blank" rel="noopener">view source on GitHub</a>
+      </p>
+      <p>
+        © 2026 Ryan Wesslen ·
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>
+      </p>
+      <p class="footer-disclaimer">
+        Views expressed here are my own and do not represent those of my employer. Nothing here is legal, regulatory, or
+        financial advice.
+      </p>
+    </footer>
+
+    <!-- ── Certificate modal ─────────────────────────────── -->
+    <div
+      id="cert-overlay"
+      class="cert-overlay"
+      style="display: none"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="cert-dialog-title"
+    >
+      <div class="cert-dialog">
+        <div class="cert-dialog-header">
+          <span class="cert-dialog-title" id="cert-dialog-title">// overhang — certificate of completion</span>
+          <div class="cert-header-actions">
+            <button class="cert-print-btn" id="cert-print-btn">print ↗</button>
+            <button class="cert-close-btn" id="cert-close-btn" aria-label="Close certificate">✕</button>
+          </div>
+        </div>
+        <div class="cert-body">
+          <div class="cert-course-label">the money behind the AI boom · all modules complete</div>
+          <pre class="cert-ascii">
+   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~
+  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~
+ ~   I wish you the best in your    ~
+~    continual journey to learn     ~
+ ~   and improve yourself.         ~
+~                        — Ryan   ~
+  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~  ~
+   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~</pre
+          >
+          <div class="cert-date" id="cert-date"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Module quiz modal ─────────────────────────────── -->
+    <div
+      id="module-quiz-overlay"
+      class="module-quiz-overlay"
+      style="display: none"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="module-quiz-title"
+    >
+      <div class="module-quiz-dialog">
+        <div class="module-quiz-dialog-header">
+          <span class="module-quiz-dialog-title" id="module-quiz-title">// module test</span>
+          <button class="module-quiz-close" id="module-quiz-close" aria-label="Close quiz">✕</button>
+        </div>
+        <div class="module-quiz-dialog-body" id="module-quiz-body"></div>
+      </div>
+    </div>
+
+    <script>
+      (() => {
+        "use strict";
+
+        /* ── Theme Persistence ──────────────────────────── */
+        const root = document.documentElement;
+        const toggleBtn = document.getElementById("theme-toggle");
+        const themeIcon = document.getElementById("theme-icon");
+        const savedTheme = localStorage.getItem("overhang-theme") || "light";
+
+        function applyTheme(theme) {
+          root.setAttribute("data-theme", theme);
+          themeIcon.textContent = theme === "dark" ? "☀️" : "🌙";
+          localStorage.setItem("overhang-theme", theme);
+        }
+
+        applyTheme(savedTheme);
+
+        toggleBtn.addEventListener("click", () => {
+          const current = root.getAttribute("data-theme");
+          applyTheme(current === "dark" ? "light" : "dark");
+        });
+
+        /* ── Mobile Nav (hamburger) ─────────────────────── */
+        (function () {
+          var btn = document.getElementById("nav-hamburger");
+          var nav = document.getElementById("mobile-nav");
+          if (!btn || !nav) return;
+          function openMenu() {
+            nav.classList.add("open");
+            btn.setAttribute("aria-expanded", "true");
+            btn.textContent = "✕";
+          }
+          function closeMenu() {
+            nav.classList.remove("open");
+            btn.setAttribute("aria-expanded", "false");
+            btn.innerHTML = "&#9776;";
+          }
+          btn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            nav.classList.contains("open") ? closeMenu() : openMenu();
+          });
+          document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") closeMenu();
+          });
+          nav.querySelectorAll(".nav-link").forEach(function (link) {
+            link.addEventListener("click", closeMenu);
+          });
+          document.addEventListener("click", function (e) {
+            if (!btn.contains(e.target) && !nav.contains(e.target)) closeMenu();
+          });
+        })();
+
+        /* ── Reading Progress Bar ───────────────────────── */
+        const bar = document.getElementById("progress-bar");
+        function updateProgress() {
+          const scrollTop = window.scrollY;
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const pct = docHeight > 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0;
+          bar.style.width = pct + "%";
+          bar.setAttribute("aria-valuenow", Math.round(pct));
+        }
+        window.addEventListener("scroll", updateProgress, { passive: true });
+
+        /* ── Tag Color (deterministic hue from tag name) ── */
+        function tagHue(tag) {
+          let hash = 0;
+          for (let i = 0; i < tag.length; i++) {
+            hash = (hash * 31 + tag.charCodeAt(i)) & 0xffffffff;
+          }
+          return Math.abs(hash) % 360;
+        }
+
+        function tagStyle(tag) {
+          const hue = tagHue(tag);
+          const isDark = root.getAttribute("data-theme") === "dark";
+          const bg = isDark ? `hsla(${hue},70%,60%,0.12)` : `hsla(${hue},60%,40%,0.10)`;
+          const border = isDark ? `hsla(${hue},70%,60%,0.4)` : `hsla(${hue},60%,40%,0.35)`;
+          const color = isDark ? `hsl(${hue},80%,72%)` : `hsl(${hue},50%,35%)`;
+          return `background:${bg};border-color:${border};color:${color}`;
+        }
+
+        /* ── Read Time Estimate ─────────────────────────── */
+        function readTime(text) {
+          const words = text.trim().split(/\s+/).length;
+          const mins = Math.max(1, Math.round(words / 225));
+          return `${mins} min read`;
+        }
+
+        /* ── Format Date ────────────────────────────────── */
+        function fmtDate(iso) {
+          if (!iso) return "";
+          const d = new Date(iso + "T00:00:00");
+          return d.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          });
+        }
+
+        /* ── Post URL ───────────────────────────────────── */
+        function postUrl(slug, draft) {
+          return draft
+            ? `./post.html?slug=${encodeURIComponent(slug)}.draft`
+            : `./post.html?slug=${encodeURIComponent(slug)}`;
+        }
+
+        /* ── Module quiz modal ──────────────────────────── */
+        let overlay, quizBody, quizTitle;
+
+        function openModuleQuiz(moduleId, moduleTitle) {
+          quizTitle.textContent = `// ${moduleTitle} — module test`;
+          overlay.style.display = "flex";
+          document.body.style.overflow = "hidden";
+          if (typeof window.initModuleQuiz === "function") {
+            window.initModuleQuiz(moduleId, quizBody, closeModuleQuiz);
+          }
+        }
+
+        function closeModuleQuiz() {
+          overlay.style.display = "none";
+          document.body.style.overflow = "";
+          quizBody.innerHTML = "";
+          updateCompletionZone();
+        }
+
+        /* ── Certificate modal ──────────────────────────── */
+        let certOverlay;
+
+        function openCertificate() {
+          certOverlay = certOverlay || document.getElementById("cert-overlay");
+          const dateEl = document.getElementById("cert-date");
+          if (dateEl) {
+            dateEl.textContent =
+              "completed " + new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+          }
+          certOverlay.style.display = "flex";
+          document.body.style.overflow = "hidden";
+        }
+
+        function closeCertificate() {
+          if (certOverlay) certOverlay.style.display = "none";
+          document.body.style.overflow = "";
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+          const co = document.getElementById("cert-overlay");
+          const closeBtn = document.getElementById("cert-close-btn");
+          const printBtn = document.getElementById("cert-print-btn");
+          const certOpenBtn = document.getElementById("open-cert-btn");
+          const examOpenBtn = document.getElementById("open-final-exam-btn");
+          if (closeBtn) closeBtn.addEventListener("click", closeCertificate);
+          if (co)
+            co.addEventListener("click", (e) => {
+              if (e.target === co) closeCertificate();
+            });
+          if (printBtn) printBtn.addEventListener("click", () => window.print());
+          if (certOpenBtn) certOpenBtn.addEventListener("click", openCertificate);
+          if (examOpenBtn) examOpenBtn.addEventListener("click", () => openModuleQuiz("final-exam", "Final Exam"));
+          document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && co && co.style.display !== "none") closeCertificate();
+          });
+
+          // Dev mode banner
+          if (typeof window.isDevMode === "function" && window.isDevMode()) {
+            const banner = document.createElement("div");
+            banner.className = "dev-mode-banner";
+            banner.textContent = "// dev mode — ?dev=false to exit";
+            document.body.appendChild(banner);
+          }
+        });
+
+        /* ── Completion zone visibility ─────────────────── */
+        let _allModuleIds = [];
+
+        function updateCompletionZone() {
+          const zone = document.getElementById("completion-zone");
+          if (!zone) return;
+          const complete =
+            typeof window.hasCompletedAllModules === "function" && window.hasCompletedAllModules(_allModuleIds);
+          zone.classList.toggle("completion-zone--locked", !complete);
+          // Disable action buttons when locked so they can't be clicked through
+          zone.querySelectorAll("button").forEach((btn) => {
+            btn.disabled = !complete;
+          });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+          overlay = document.getElementById("module-quiz-overlay");
+          quizBody = document.getElementById("module-quiz-body");
+          quizTitle = document.getElementById("module-quiz-title");
+          const closeBtn = document.getElementById("module-quiz-close");
+          closeBtn.addEventListener("click", closeModuleQuiz);
+          overlay.addEventListener("click", (e) => {
+            if (e.target === overlay) closeModuleQuiz();
+          });
+          document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && overlay && overlay.style.display !== "none") closeModuleQuiz();
+          });
+
+          /* ── Progress backup / restore handlers ─────── */
+          const saveBtn = document.getElementById("save-progress-btn");
+          const fileInput = document.getElementById("progress-file-input");
+          const uploadLabel = document.getElementById("load-progress-label");
+
+          function showBackupStatus(msg, type) {
+            const el = document.getElementById("quiz-backup-status");
+            if (!el) return;
+            el.textContent = msg;
+            el.className =
+              "quiz-backup-status " + (type === "error" ? "quiz-backup-status-error" : "quiz-backup-status-ok");
+            setTimeout(() => {
+              el.textContent = "";
+              el.className = "quiz-backup-status";
+            }, 6000);
+          }
+
+          if (saveBtn) {
+            saveBtn.addEventListener("click", async () => {
+              if (saveBtn.disabled) return;
+              saveBtn.disabled = true;
+              const orig = saveBtn.textContent;
+              saveBtn.textContent = "saving…";
+              try {
+                await window.exportProgress();
+                saveBtn.textContent = "saved ✓";
+                setTimeout(() => {
+                  saveBtn.disabled = false;
+                  saveBtn.textContent = orig;
+                }, 2000);
+              } catch (err) {
+                saveBtn.disabled = false;
+                saveBtn.textContent = orig;
+                showBackupStatus("Export failed: " + err.message, "error");
+              }
+            });
+          }
+
+          if (fileInput) {
+            // Allow keyboard activation of the label
+            if (uploadLabel) {
+              uploadLabel.addEventListener("keydown", (e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  fileInput.click();
+                }
+              });
+            }
+            fileInput.addEventListener("change", async () => {
+              const file = fileInput.files && fileInput.files[0];
+              if (!file) return;
+              if (uploadLabel) uploadLabel.setAttribute("aria-disabled", "true");
+              try {
+                await window.importProgress(file);
+                showBackupStatus("Progress restored — reloading page…", "ok");
+                setTimeout(() => window.location.reload(), 1400);
+              } catch (err) {
+                const msg =
+                  err.message === "invalid-signature"
+                    ? "Verification failed — the file may have been edited or is from a different version."
+                    : err.message === "corrupt"
+                      ? "The file doesn't look like a valid progress backup."
+                      : err.message === "version-mismatch"
+                        ? "Backup version not compatible with this site."
+                        : "Import failed: " + err.message;
+                showBackupStatus(msg, "error");
+              } finally {
+                fileInput.value = "";
+                if (uploadLabel) uploadLabel.removeAttribute("aria-disabled");
+              }
+            });
+          }
+        });
+
+        /* ── Render intro feature card ──────────────────── */
+        function renderIntroFeature(manifest, bodies) {
+          const container = document.getElementById("intro-feature");
+          if (!container) return;
+          const introPost = manifest.find((p) => p.slug === "the-overhang");
+          if (!introPost) return;
+          const idx = manifest.indexOf(introPost);
+          const body = bodies[idx] || introPost.description;
+          const rt = readTime(body);
+          container.innerHTML = `
+            <a href="${postUrl(introPost.slug)}" class="index-intro-feature" aria-label="Read intro post">
+              <span class="intro-feature-label">// intro</span>
+              <span class="intro-feature-title">${introPost.title}</span>
+              <p class="intro-feature-desc">${introPost.description}</p>
+              <span class="intro-feature-link">read → ${rt}</span>
+            </a>`;
+        }
+
+        /* ── Render module grid ─────────────────────────── */
+        function renderModuleGrid(decks, manifest, bodies) {
+          const grid = document.getElementById("slides-grid");
+          if (!grid) return;
+
+          const bySlug = {};
+          manifest.forEach((p, i) => {
+            bySlug[p.slug] = { post: p, body: bodies[i] };
+          });
+
+          grid.innerHTML = decks
+            .map((deck, i) => {
+              const moduleNum = String(i + 1).padStart(2, "0");
+              const badgeClass = deck.published ? "published" : "soon";
+              const badgeLabel = deck.published ? "published" : "coming soon";
+
+              const postItems = (deck.posts || [])
+                .map((slug) => {
+                  const entry = bySlug[slug];
+                  if (!entry) return "";
+                  const { post, body } = entry;
+                  const rt = readTime(body);
+                  const tags = (post.tags || [])
+                    .slice(0, 3)
+                    .map((t) => `<span class="row-a-tag" style="${tagStyle(t)}">${t}</span>`)
+                    .join("");
+                  const draftBadge = post.draft ? ` <span class="draft-badge">draft</span>` : "";
+                  return `
+                  <div class="scp-item" data-slug="${slug}">
+                    <div class="scp-header">
+                      <span class="scp-chevron">▶</span>
+                      <div class="scp-title-row">
+                        <a href="${postUrl(slug, post.draft)}" class="row-a-title scp-title">${post.title}${draftBadge}</a>
+                        <span class="scp-date">${fmtDate(post.date)}</span>
+                      </div>
+                      <span class="scp-quiz-check" title="Quiz not complete">□</span>
+                    </div>
+                    <div class="scp-expand">
+                      <p class="scp-desc">${post.description}</p>
+                      <div class="scp-foot">
+                        <a href="${postUrl(slug, post.draft)}" class="scp-link">read → ${rt}</a>
+                        <span class="scp-tags">${tags}</span>
+                      </div>
+                    </div>
+                  </div>`;
+                })
+                .join("");
+
+              const quizBtn = deck.quiz
+                ? `<span class="quiz-btn-wrap"><button class="slide-btn slide-btn-quiz" data-module-id="${deck.id}" data-module-title="${deck.title}" data-module-posts-key="${deck.id}">// test this module</button></span>`
+                : "";
+
+              const actions = deck.published
+                ? `<div class="slide-card-actions">
+                    <a href="./${deck.dir}/index.html" class="slide-btn slide-btn-html" target="_blank" rel="noopener">view slides ↗</a>
+                    <a href="./${deck.dir}/index.pdf" class="slide-btn slide-btn-pdf" download>download pdf ↓</a>
+                    ${quizBtn}
+                  </div>`
+                : quizBtn
+                  ? `<div class="slide-card-actions">${quizBtn}</div>`
+                  : "";
+
+              return `
+              <div class="slide-card"${deck.quiz ? ` data-module-posts="${(deck.posts || []).join(",")}"` : ""}>
+                <div class="slide-card-header">
+                  <p class="slide-card-title">
+                    <span style="color:var(--muted);font-size:0.78rem;font-family:var(--font-mono);margin-right:0.4rem">${moduleNum}</span>${deck.title}
+                  </p>
+                  <span class="slide-card-badge ${badgeClass}">${badgeLabel}</span>
+                </div>
+                <div class="slide-card-divider"></div>
+                <p class="slide-card-desc">${deck.description}</p>
+                ${postItems ? `<div class="scp-list">${postItems}</div>` : ""}
+                ${actions}
+              </div>`;
+            })
+            .join("");
+        }
+
+        /* ── Lock/unlock module test buttons ───────────── */
+        function updateModuleTestButtons() {
+          document.querySelectorAll("[data-module-posts]").forEach((card) => {
+            const slugs = card.dataset.modulePosts.split(",").filter(Boolean);
+            const wrap = card.querySelector(".quiz-btn-wrap");
+            const btn = wrap && wrap.querySelector(".slide-btn-quiz");
+            if (!btn) return;
+            const unlocked = typeof window.isModuleUnlocked === "function" && window.isModuleUnlocked(slugs);
+            if (unlocked) {
+              btn.removeAttribute("aria-disabled");
+              wrap.removeAttribute("data-locked");
+            } else {
+              btn.setAttribute("aria-disabled", "true");
+              wrap.setAttribute("data-locked", `score 5/5 on all ${slugs.length} post quizzes to unlock`);
+            }
+          });
+        }
+
+        /* ── Update □/✓ quiz check indicators ──────────── */
+        function updateQuizChecks() {
+          document.querySelectorAll(".scp-item[data-slug]").forEach((item) => {
+            const check = item.querySelector(".scp-quiz-check");
+            if (!check) return;
+            // initQuizBadges appended a .quiz-done-badge to .row-a-title if quizzed
+            const badge = item.querySelector(".quiz-done-badge");
+            if (badge) {
+              check.textContent = "✓";
+              check.classList.add("scp-quiz-done");
+              check.title = "Quiz complete";
+              badge.style.display = "none"; // hide duplicate; □/✓ in scp-quiz-check is the indicator
+            }
+          });
+        }
+
+        /* ── Load data and render ───────────────────────── */
+        async function loadContent() {
+          try {
+            const res = await fetch("./posts/index.json");
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const manifest = await res.json();
+            manifest.sort((a, b) => b.date.localeCompare(a.date));
+
+            const [bodies, decks] = await Promise.all([
+              Promise.all(
+                manifest.map(async (post) => {
+                  try {
+                    const r = await fetch(`./posts/${post.slug}.md`);
+                    const text = r.ok ? await r.text() : post.description;
+                    return text.replace(/^---[\s\S]*?---\n/, "");
+                  } catch {
+                    return post.description;
+                  }
+                })
+              ),
+              fetch("./slides/slides.json")
+                .then((r) => (r.ok ? r.json() : []))
+                .catch(() => []),
+            ]);
+
+            renderIntroFeature(manifest, bodies);
+            renderModuleGrid(decks, manifest, bodies);
+
+            // Store module IDs for completion tracking
+            _allModuleIds = decks.filter((d) => d.quiz).map((d) => d.id);
+
+            // Quiz badges: ✓ on quizzed posts, update □ indicators
+            if (typeof window.initQuizBadges === "function") {
+              window.initQuizBadges();
+              updateQuizChecks();
+              updateModuleTestButtons();
+            }
+
+            // Show completion zone if all modules done
+            updateCompletionZone();
+
+            // Module progress indicators (e.g. "2/3 posts quizzed")
+            document.querySelectorAll("[data-module-posts]").forEach((card) => {
+              const slugs = card.dataset.modulePosts.split(",").filter(Boolean);
+              if (typeof window.initModuleProgress === "function") {
+                window.initModuleProgress(slugs, card);
+              }
+            });
+
+            // Quiz button click handler
+            const grid = document.getElementById("slides-grid");
+            if (grid) {
+              grid.addEventListener("click", (e) => {
+                const btn = e.target.closest("[data-module-id]");
+                if (btn && btn.getAttribute("aria-disabled") !== "true") {
+                  openModuleQuiz(btn.dataset.moduleId, btn.dataset.moduleTitle);
+                }
+              });
+            }
+          } catch (err) {
+            const grid = document.getElementById("slides-grid");
+            if (grid) {
+              grid.innerHTML = `<div style="padding:2rem;color:var(--muted);font-family:var(--font-mono);font-size:0.8rem;">
+                ⚠ Could not load content (${err.message})<br>
+                <span style="font-size:0.75rem">If local, serve with python -m http.server</span>
+              </div>`;
+            }
+          }
+        }
+
+        loadContent();
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "overhang",
+  "private": true,
+  "description": "CI tooling for Overhang — a course on the money behind the AI boom (wesslen.github.io/overhang)",
+  "scripts": {
+    "lint:html": "htmlhint \"*.html\"",
+    "lint:md": "markdownlint-cli \"posts/*.md\" --ignore \"posts/reference-audit.md\"",
+    "lint:format": "prettier --check \"*.html\" \"*.css\"",
+    "lint": "npm run lint:html && npm run lint:md && npm run lint:format",
+    "format": "prettier --write \"*.html\" \"*.css\"",
+    "build:search": "node scripts/build-search-index.js",
+    "build:theme": "node scripts/build-theme.js",
+    "validate:quiz": "node scripts/validate-quiz.js",
+    "test:quiz": "node --test scripts/test-quiz.js",
+    "build:quiz": "npm run validate:quiz && npm run test:quiz"
+  },
+  "devDependencies": {
+    "htmlhint": "^1.1.4",
+    "js-yaml": "^4.1.1",
+    "markdownlint-cli": "^0.43.0",
+    "prettier": "^3.4.2"
+  }
+}
