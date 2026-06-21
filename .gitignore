@@ -27,3 +27,8 @@ CLAUDE.md
 
 # env
 .env
+
+editorial/*
+
+tools/review-panel/*
+tools/generate_image.py
